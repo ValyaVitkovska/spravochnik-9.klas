@@ -28,7 +28,7 @@
             html, body { 
                 background-color: white !important; 
                 color: black !important; 
-                font-size: 11pt !important; 
+                font-size: 10pt !important; 
                 margin: 0 !important; 
                 padding: 0 !important;
                 height: auto !important;
@@ -43,14 +43,31 @@
             .bg-white, .bg-gray-50, .bg-indigo-50, .bg-yellow-50, .bg-green-50, .bg-blue-50, .bg-purple-50, .bg-teal-50, .bg-orange-50, .bg-red-50, .math-box { 
                 background: white !important; 
                 box-shadow: none !important; 
-                border: 1px solid #ccc !important; 
+                border: 1px solid #ddd !important; 
             }
             .text-indigo-700, .text-indigo-600, .text-blue-500, .text-teal-500, .text-purple-500, .text-red-600, .text-green-700, .text-blue-700, .text-red-700 { color: black !important; }
             button, .print-hide { display: none !important; }
             .solution-content { max-height: none !important; overflow: visible !important; display: block !important; border-top: none !important; opacity: 1 !important; visibility: visible !important; }
-            .page-break { page-break-before: always !important; }
+            
+            /* Разделители за страници */
+            .page-break { page-break-before: always !important; break-before: always !important; }
             .no-break { page-break-inside: avoid !important; break-inside: avoid !important; }
+            
+            /* Чертежите да са черно-бели при печат и малко по-компактни */
             svg polygon, svg circle, svg line, svg rect, svg path { stroke: black !important; fill: none !important; }
+            .geom-svg { max-height: 130px !important; }
+            
+            /* Оптимизация на решетките за печат, за да седят в колони */
+            .grid-cols-2, .grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; display: grid !important; }
+            .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; display: grid !important; }
+            
+            /* Компактни отстъпи за събиране в точно 4 страници */
+            .p-6 { padding: 0.75rem !important; }
+            .p-5 { padding: 0.6rem !important; }
+            .p-4 { padding: 0.5rem !important; }
+            .mb-12 { margin-bottom: 1.25rem !important; }
+            .mb-10 { margin-bottom: 0.75rem !important; }
+            .my-6 { margin-top: 0.5rem !important; margin-bottom: 0.5rem !important; }
         }
     </style>
 </head>
@@ -72,12 +89,12 @@
         </header>
 
         <!-- ALGEBRA: QUADRATIC EQUATIONS -->
-        <section class="mb-12">
+        <section class="mb-12 no-break">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">1. Квадратни уравнения</h2>
             
-            <div class="grid md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Квадратно уравнение -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 no-break">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                     <h3 class="text-xl font-bold text-indigo-700 mb-4">Корени на квадратно уравнение</h3>
                     <p class="mb-2">Общ вид: $ax^2 + bx + c = 0 \quad (a \neq 0)$</p>
                     <p class="mb-2">Дискриминанта:</p>
@@ -91,7 +108,7 @@
                 </div>
 
                 <!-- Разлагане -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 no-break">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                     <h3 class="text-xl font-bold text-indigo-700 mb-4">Разлагане на квадратен тричлен</h3>
                     <p class="mb-4">Ако уравнението $ax^2 + bx + c = 0$ има корени $x_1$ и $x_2$, тричленът се разлага по формулата:</p>
                     <div class="math-box p-4 rounded mb-6 text-center text-xl font-semibold">
@@ -105,11 +122,11 @@
         </section>
 
         <!-- ALGEBRA: METHOD OF INTERVALS -->
-        <section class="mb-12">
+        <section class="mb-12 no-break">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">2. Метод на интервалите</h2>
             
             <!-- Алгоритъм -->
-            <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 mb-6 no-break">
+            <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 mb-6">
                 <h3 class="text-xl font-bold text-indigo-800 mb-3">Алгоритъм за решаване</h3>
                 <ol class="list-decimal pl-5 space-y-2 text-gray-700">
                     <li><strong>Подготовка:</strong> Преобразуваме неравенството, така че отдясно да има нула: $f(x) \gtrless 0$.</li>
@@ -131,8 +148,8 @@
 
             <!-- Задачи: Цели неравенства -->
             <div class="space-y-6">
-                <!-- Задача 1: :Класическо -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden no-break">
+                <!-- Задача 1: Класическо -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <div class="p-5 flex justify-between items-center bg-gray-50 border-b border-gray-100">
                         <div class="text-lg"><strong>Пример 1:</strong> Решете неравенството $(x + 3)(x - 1)(x - 5) \le 0$</div>
                         <button onclick="toggleSolution('sol1')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded transition text-sm print-hide">Виж решението</button>
@@ -165,9 +182,9 @@
                 </div>
 
                 <!-- Задача 2: Двоен корен -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden no-break">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                     <div class="p-5 flex justify-between items-center bg-gray-50 border-b border-gray-100">
-                        <div class="text-lg"><strong>Пример 2 (С чeтна кратност):</strong> Решете неравенството $(x^2 - 4x + 4)(x + 2) > 0$</div>
+                        <div class="text-lg"><strong>Пример 2 (С четна кратност):</strong> Решете неравенството $(x^2 - 4x + 4)(x + 2) > 0$</div>
                         <button onclick="toggleSolution('sol2')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded transition text-sm print-hide">Виж решението</button>
                     </div>
                     <div id="sol2" class="solution-content px-6 bg-white">
@@ -197,15 +214,15 @@
             </div>
         </section>
 
-        <div class="page-break"></div> <!-- Нова страница -->
+        <div class="page-break"></div> <!-- КРАЙ НА СТРАНИЦА 1 -->
 
         <!-- GEOMETRY: SIMILAR TRIANGLES, THALES, BISECTOR -->
         <section class="mb-12">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">3. Пропорции и подобни триъгълници</h2>
             
-            <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 no-break">
                 <!-- Определение и признаци -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 no-break">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                     <h3 class="text-xl font-bold text-indigo-700 mb-4">Признаци за подобност</h3>
                     <p class="mb-4 text-gray-700">Два триъгълника са <strong>подобни</strong> ($\triangle ABC \sim \triangle A_1B_1C_1$), ако ъглите им са съответно равни и страните им са пропорционални.</p>
                     <ul class="space-y-3 text-sm text-gray-800">
@@ -221,7 +238,7 @@
                 </div>
 
                 <!-- Свойства и Чертеж -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center no-break">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center">
                     <h3 class="text-xl font-bold text-indigo-700 mb-4 w-full text-left">Свойство на ъглополовящата</h3>
                     <!-- SVG Ъглополовяща -->
                     <svg class="w-full max-w-[200px] h-auto mb-4" viewBox="0 0 100 80">
@@ -269,13 +286,15 @@
             </div>
         </section>
 
+        <div class="page-break"></div> <!-- КРАЙ НА СТРАНИЦА 2 -->
+
         <!-- GEOMETRY: METRIC DEPENDENCIES -->
-        <section class="mb-12 page-break">
+        <section class="mb-12">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">4. Метрични зависимости в правоъгълен триъгълник и правоъгълник</h2>
             
-            <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 no-break">
                 <!-- В правоъгълен триъгълник -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 border-t-4 border-teal-500 no-break">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 border-t-4 border-teal-500">
                     <h3 class="text-xl font-bold text-center mb-4">В правоъгълен триъгълник ($\triangle ABC$)</h3>
                     <!-- SVG Правоъгълен триъгълник -->
                     <svg class="geom-svg mb-4" viewBox="0 0 100 65">
@@ -308,7 +327,7 @@
                 </div>
 
                 <!-- В правоъгълник -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 border-t-4 border-orange-500 no-break">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 border-t-4 border-orange-500">
                     <h3 class="text-xl font-bold text-center mb-4">В правоъгълник</h3>
                     <!-- SVG Правоъгълник -->
                     <svg class="geom-svg mb-4" viewBox="0 0 100 65">
@@ -334,11 +353,11 @@
         </section>
 
         <!-- GEOMETRY: REMARKABLE POINTS AND FIGURES -->
-        <section class="mb-12 page-break">
+        <section class="mb-12 no-break">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">5. Забележителни точки в триъгълника</h2>
             
             <!-- Основни елементи в триъгълника -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8 flex flex-col md:flex-row items-center gap-8 no-break">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8 flex flex-col md:flex-row items-center gap-8">
                 <!-- SVG -->
                 <svg class="w-full max-w-[280px]" viewBox="0 0 100 105">
                     <polygon points="10,80 90,80 40,20" fill="#e0e7ff" stroke="#3b82f6" stroke-width="1.5"/>
@@ -399,7 +418,7 @@
             </div>
 
             <!-- 4-те забележителни точки -->
-            <div class="grid md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
                     <div class="flex items-center mb-2">
                         <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-xl mr-3">G</div>
@@ -434,8 +453,10 @@
             </div>
         </section>
 
+        <div class="page-break"></div> <!-- КРАЙ НА СТРАНИЦА 3 -->
+
         <!-- GEOMETRY: ISOSCELES TRIANGLE -->
-        <section class="mb-12 page-break">
+        <section class="mb-12">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">6. Равнобедрен триъгълник</h2>
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8 no-break">
                 <!-- SVG Равнобедрен триъгълник -->
@@ -464,7 +485,7 @@
                 <div class="w-full md:w-2/3 space-y-3 text-gray-700">
                     <p class="text-lg font-semibold text-indigo-700">Свойства и зависимости:</p>
                     <ul class="list-disc pl-5 space-y-2 text-sm md:text-base">
-                        <li><strong>Бедра и основа:</strong> Бедрата са равни ($AC = BC = b$ или $a$), а основата винаги се означава като $AB = c$.</li>
+                        <li><strong>Бедра и основа:</strong> Бедрата са равни ($AC = BC = b$), а основата винаги се означава като $AB = c$.</li>
                         <li><strong>Ъгли:</strong> Ъглите при основата са равни ($\angle A = \angle B$).</li>
                         <li><strong>Съвпадение на елементи:</strong> Спусканата към основата $c$ височина $h_c$, медиана $m_c$, ъглополовяща $l_c$ и симетрала $s_c$ <strong>съвпадат</strong>.</li>
                         <li><strong>Забележителни точки:</strong> Центърът на вписаната окръжност ($I$) и центърът на описаната окръжност ($O$) лежат на височината $h_c$ към основата.</li>
@@ -474,7 +495,7 @@
         </section>
 
         <!-- GEOMETRY: ISOSCELES TRAPEZOID -->
-        <section class="mb-12 page-break">
+        <section class="mb-12">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">7. Равнобедрен трапец</h2>
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8 no-break">
                 <!-- SVG Равнобедрен трапец -->
@@ -502,7 +523,7 @@
                     <p class="text-lg font-semibold text-indigo-700">Свойства и зависимости:</p>
                     <ul class="list-disc pl-5 space-y-2 text-sm md:text-base">
                         <li><strong>Равни елементи:</strong> Бедрата са равни ($AD = BC = c$), а диагоналите също са равни ($AC = BD$). Ъглите при всяка от основите са равни.</li>
-                        <li><strong>Проекции на височините:</strong> Височините $DH_1$ и $CH_2$ разделят голямата основа на отсечки:
+                        <li><strong>Проекции на височините:</strong> Височините $DH_1$ and $CH_2$ разделят голямата основа на отсечки:
                             <div class="my-1 font-semibold text-indigo-900">
                                 $$AH_1 = BH_2 = \dfrac{a - b}{2} \quad \text{и} \quad AH_2 = BH_1 = \dfrac{a + b}{2} = m \text{ (средна основа)}$$
                             </div>
@@ -519,7 +540,7 @@
         </section>
 
         <!-- GEOMETRY: RIGHT TRAPEZOID -->
-        <section class="mb-12 page-break">
+        <section class="mb-12">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">8. Правоъгълен трапец</h2>
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8 no-break">
                 <!-- SVG Правоъгълен трапец -->
@@ -566,6 +587,89 @@
                 <div class="text-sm"><strong>Средна отсечка (основа):</strong> $m = \dfrac{a + b}{2}$</div>
                 <div class="text-sm"><strong>Лице на трапец:</strong> $S = \dfrac{a + b}{2} \cdot h = m \cdot h$</div>
                 <div class="text-sm"><strong>Вписана окръжност:</strong> Диаметърът е равен на височината на трапеца: $2r = h$</div>
+            </div>
+        </section>
+
+        <!-- SQUARES TABLE 1 TO 30 -->
+        <section class="mt-12 no-break">
+            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                <h3 class="text-xl font-bold text-indigo-700 mb-4 text-center">
+                    <i class="fa-solid fa-table text-indigo-500 mr-2 print-hide"></i>Таблица с квадратите на числата от 1 до 30
+                </h3>
+                
+                <div class="grid grid-cols-3 gap-4 md:gap-8">
+                    <!-- Колона 1: 1 - 10 -->
+                    <div>
+                        <table class="w-full text-center border-collapse border border-gray-200 text-sm">
+                            <thead>
+                                <tr class="bg-indigo-50">
+                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n$</th>
+                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n^2$</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">1</td><td class="p-1 border border-gray-200 font-bold">1</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">2</td><td class="p-1 border border-gray-200 font-bold">4</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">3</td><td class="p-1 border border-gray-200 font-bold">9</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">4</td><td class="p-1 border border-gray-200 font-bold">16</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">5</td><td class="p-1 border border-gray-200 font-bold">25</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">6</td><td class="p-1 border border-gray-200 font-bold">36</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">7</td><td class="p-1 border border-gray-200 font-bold">49</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">8</td><td class="p-1 border border-gray-200 font-bold">64</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">9</td><td class="p-1 border border-gray-200 font-bold">81</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">10</td><td class="p-1 border border-gray-200 font-bold">100</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Колона 2: 11 - 20 -->
+                    <div>
+                        <table class="w-full text-center border-collapse border border-gray-200 text-sm">
+                            <thead>
+                                <tr class="bg-indigo-50">
+                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n$</th>
+                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n^2$</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">11</td><td class="p-1 border border-gray-200 font-bold">121</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">12</td><td class="p-1 border border-gray-200 font-bold">144</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">13</td><td class="p-1 border border-gray-200 font-bold">169</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">14</td><td class="p-1 border border-gray-200 font-bold">196</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">15</td><td class="p-1 border border-gray-200 font-bold">225</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">16</td><td class="p-1 border border-gray-200 font-bold">256</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">17</td><td class="p-1 border border-gray-200 font-bold">289</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">18</td><td class="p-1 border border-gray-200 font-bold">324</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">19</td><td class="p-1 border border-gray-200 font-bold">361</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">20</td><td class="p-1 border border-gray-200 font-bold">400</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Колона 3: 21 - 30 -->
+                    <div>
+                        <table class="w-full text-center border-collapse border border-gray-200 text-sm">
+                            <thead>
+                                <tr class="bg-indigo-50">
+                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n$</th>
+                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n^2$</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">21</td><td class="p-1 border border-gray-200 font-bold">441</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">22</td><td class="p-1 border border-gray-200 font-bold">484</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">23</td><td class="p-1 border border-gray-200 font-bold">529</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">24</td><td class="p-1 border border-gray-200 font-bold">576</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">25</td><td class="p-1 border border-gray-200 font-bold">625</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">26</td><td class="p-1 border border-gray-200 font-bold">676</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">27</td><td class="p-1 border border-gray-200 font-bold">729</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">28</td><td class="p-1 border border-gray-200 font-bold">784</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">29</td><td class="p-1 border border-gray-200 font-bold">841</td></tr>
+                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">30</td><td class="p-1 border border-gray-200 font-bold">900</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </section>
 
