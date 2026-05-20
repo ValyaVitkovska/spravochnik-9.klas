@@ -35,12 +35,16 @@
             .page-break { display: none; }
         }
 
-        /* СТИЛОВЕ ЗА ПРИНТИРАНЕ (Оптимизирани за 6 страници) */
+        /* СТИЛОВЕ ЗА ПРИНТИРАНЕ (Оптимизирани строго за 6 страници) */
         @media print {
+            @page {
+                margin: 1.2cm; /* По-малки бели полета на хартията */
+            }
             html, body { 
                 background-color: white !important; 
                 color: black !important; 
-                font-size: 11.5pt !important; /* По-голям и четим шрифт */
+                font-size: 10.5pt !important; /* Лек и компактен шрифт */
+                line-height: 1.35 !important;
                 margin: 0 !important; 
                 padding: 0 !important;
                 height: auto !important;
@@ -59,28 +63,42 @@
             }
             .text-indigo-700, .text-indigo-600, .text-blue-500, .text-teal-500, .text-purple-500, .text-red-600, .text-green-700, .text-blue-700, .text-red-700 { color: black !important; }
             button, .print-hide { display: none !important; }
-            .solution-content { max-height: none !important; overflow: visible !important; display: block !important; border-top: none !important; opacity: 1 !important; visibility: visible !important; }
             
-            /* Разделители за страници */
+            /* Разгъване на решенията без да заемат излишна височина */
+            .solution-content { max-height: none !important; height: auto !important; overflow: visible !important; display: block !important; border-top: none !important; opacity: 1 !important; visibility: visible !important; }
+            
+            /* Разделители за страници - гарантират точното прекъсване */
             .page-break { 
                 page-break-before: always !important; 
                 break-before: always !important; 
                 display: block !important; 
-                height: 0; 
+                height: 0 !important; 
+                margin: 0 !important; 
+                padding: 0 !important;
             }
             .no-break { page-break-inside: avoid !important; break-inside: avoid !important; }
             
-            /* Чертежите да са черно-бели при печат и с адекватен размер */
+            /* Чертежите да са черно-бели при печат и по-компактни */
             svg polygon, svg circle, svg line, svg rect, svg path { stroke: black !important; fill: none !important; }
-            .geom-svg { max-height: 160px !important; } /* Увеличени чертежи за по-добра видимост */
+            .geom-svg { max-height: 130px !important; margin-bottom: 0.5rem !important; }
             
-            /* Оптимизация на решетките за печат */
-            .grid-cols-2, .grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; display: grid !important; }
-            .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; display: grid !important; }
+            /* Оптимизация на решетките за печат - поддържаме ги като колони */
+            .grid-cols-1.md\:grid-cols-2, .grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; display: grid !important; gap: 1rem !important; }
+            .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; display: grid !important; gap: 0.75rem !important; }
             
-            /* Отпуснати отстъпи за по-добро запълване на 6 страници */
-            .p-6 { padding: 1.25rem !important; }
-            .mb-12 { margin-bottom: 2rem !important; }
+            /* ДРАСТИЧНО НАМАЛЯВАНЕ НА ПРАЗНИТЕ ПРОСТРАНСТВА */
+            .p-6, .p-5, .p-4 { padding: 0.6rem !important; }
+            .py-5 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+            .mb-12 { margin-bottom: 1.25rem !important; }
+            .mb-10, .mb-8, .mb-6 { margin-bottom: 0.75rem !important; }
+            .mb-4, .mb-3 { margin-bottom: 0.25rem !important; }
+            .mt-12 { margin-top: 1rem !important; }
+            .mt-6, .mt-4 { margin-top: 0.5rem !important; }
+            .my-6 { margin-top: 0.5rem !important; margin-bottom: 0.5rem !important; }
+            
+            h2.text-3xl { font-size: 1.5rem !important; }
+            h3.text-xl { font-size: 1.15rem !important; }
+            h3.text-lg { font-size: 1.05rem !important; }
         }
     </style>
 </head>
