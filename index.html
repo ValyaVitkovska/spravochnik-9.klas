@@ -31,12 +31,16 @@
             padding: 4px 0;
         }
 
-        /* СТИЛОВЕ ЗА ПРИНТИРАНЕ */
+        @media screen {
+            .page-break { display: none; }
+        }
+
+        /* СТИЛОВЕ ЗА ПРИНТИРАНЕ (Оптимизирани за 6 страници) */
         @media print {
             html, body { 
                 background-color: white !important; 
                 color: black !important; 
-                font-size: 10pt !important; 
+                font-size: 11.5pt !important; /* По-голям и четим шрифт */
                 margin: 0 !important; 
                 padding: 0 !important;
                 height: auto !important;
@@ -58,24 +62,25 @@
             .solution-content { max-height: none !important; overflow: visible !important; display: block !important; border-top: none !important; opacity: 1 !important; visibility: visible !important; }
             
             /* Разделители за страници */
-            .page-break { page-break-before: always !important; break-before: always !important; }
+            .page-break { 
+                page-break-before: always !important; 
+                break-before: always !important; 
+                display: block !important; 
+                height: 0; 
+            }
             .no-break { page-break-inside: avoid !important; break-inside: avoid !important; }
             
-            /* Чертежите да са черно-бели при печат и малко по-компактни */
+            /* Чертежите да са черно-бели при печат и с адекватен размер */
             svg polygon, svg circle, svg line, svg rect, svg path { stroke: black !important; fill: none !important; }
-            .geom-svg { max-height: 130px !important; }
+            .geom-svg { max-height: 160px !important; } /* Увеличени чертежи за по-добра видимост */
             
-            /* Оптимизация на решетките за печат, за да седят в колони */
+            /* Оптимизация на решетките за печат */
             .grid-cols-2, .grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; display: grid !important; }
             .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; display: grid !important; }
             
-            /* Компактни отстъпи за събиране в точно 4 страници */
-            .p-6 { padding: 0.75rem !important; }
-            .p-5 { padding: 0.6rem !important; }
-            .p-4 { padding: 0.5rem !important; }
-            .mb-12 { margin-bottom: 1.25rem !important; }
-            .mb-10 { margin-bottom: 0.75rem !important; }
-            .my-6 { margin-top: 0.5rem !important; margin-bottom: 0.5rem !important; }
+            /* Отпуснати отстъпи за по-добро запълване на 6 страници */
+            .p-6 { padding: 1.25rem !important; }
+            .mb-12 { margin-bottom: 2rem !important; }
         }
     </style>
 </head>
@@ -90,8 +95,9 @@
             </button>
         </div>
 
+        <!-- СТРАНИЦА 1 -->
         <!-- Header -->
-        <header class="text-center mb-10">
+        <header class="text-center mb-10 no-break">
             <h1 class="text-4xl md:text-5xl font-bold text-indigo-700 mb-3"><i class="fa-solid fa-book-open text-indigo-500 mr-3 print-hide"></i>Справочник за класна работа №2</h1>
             <p class="text-lg text-gray-600 font-semibold border-b-2 border-gray-200 pb-4 inline-block px-8">Математика • 9. клас • Алгебра и Геометрия</p>
         </header>
@@ -129,7 +135,7 @@
             </div>
         </section>
 
-        <!-- ALGEBRA: METHOD OF INTERVALS -->
+        <!-- ALGEBRA: METHOD OF INTERVALS - ALGO -->
         <section class="mb-12 no-break">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">2. Метод на интервалите</h2>
             
@@ -153,11 +159,16 @@
                     <li><strong>Решение:</strong> Записваме интервалите, отговарящи на знака на неравенството.</li>
                 </ol>
             </div>
+        </section>
 
+        <!-- СТРАНИЦА 2 -->
+        <div class="page-break"></div>
+        
+        <section class="mb-12">
             <!-- Задачи: Цели неравенства -->
             <div class="space-y-6">
                 <!-- Задача 1: Класическо -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden no-break">
                     <div class="p-5 flex justify-between items-center bg-gray-50 border-b border-gray-100">
                         <div class="text-lg"><strong>Пример 1:</strong> Решете неравенството $(x + 3)(x - 1)(x - 5) \le 0$</div>
                         <button onclick="toggleSolution('sol1')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded transition text-sm print-hide">Виж решението</button>
@@ -190,7 +201,7 @@
                 </div>
 
                 <!-- Задача 2: Двоен корен -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden no-break">
                     <div class="p-5 flex justify-between items-center bg-gray-50 border-b border-gray-100">
                         <div class="text-lg"><strong>Пример 2 (С четна кратност):</strong> Решете неравенството $(x^2 - 4x + 4)(x + 2) > 0$</div>
                         <button onclick="toggleSolution('sol2')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded transition text-sm print-hide">Виж решението</button>
@@ -222,7 +233,8 @@
             </div>
         </section>
 
-        <div class="page-break"></div> <!-- КРАЙ НА СТРАНИЦА 1 -->
+        <!-- СТРАНИЦА 3 -->
+        <div class="page-break"></div>
 
         <!-- GEOMETRY: SIMILAR TRIANGLES, THALES, BISECTOR -->
         <section class="mb-12">
@@ -297,7 +309,8 @@
             </div>
         </section>
 
-        <div class="page-break"></div> <!-- КРАЙ НА СТРАНИЦА 2 -->
+        <!-- СТРАНИЦА 4 -->
+        <div class="page-break"></div>
 
         <!-- GEOMETRY: RIGHT TRIANGLE -->
         <section class="mb-12">
@@ -455,14 +468,15 @@
             </div>
         </section>
 
-        <div class="page-break"></div> <!-- КРАЙ НА СТРАНИЦА 3 -->
+        <!-- СТРАНИЦА 5 -->
+        <div class="page-break"></div>
 
         <!-- GEOMETRY: ISOSCELES TRIANGLE -->
-        <section class="mb-12">
+        <section class="mb-12 no-break">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">6. Равнобедрен триъгълник</h2>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8 no-break">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8">
                 <!-- SVG Равнобедрен триъгълник -->
-                <div class="w-full md:w-1/3">
+                <div class="w-full md:w-1/3 flex justify-center">
                     <svg class="geom-svg max-w-[170px]" viewBox="0 0 100 100">
                         <!-- Описана окръжност -->
                         <circle cx="50" cy="55.2" r="40.2" fill="none" stroke="#93c5fd" stroke-width="1" stroke-dasharray="2"/>
@@ -497,11 +511,11 @@
         </section>
 
         <!-- GEOMETRY: ISOSCELES TRAPEZOID -->
-        <section class="mb-12">
+        <section class="mb-12 no-break">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">7. Равнобедрен трапец</h2>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8 no-break">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8">
                 <!-- SVG Равнобедрен трапец -->
-                <div class="w-full md:w-1/3">
+                <div class="w-full md:w-1/3 flex justify-center">
                     <svg class="geom-svg max-w-[170px]" viewBox="0 0 100 100">
                         <!-- Описана окръжност - преминава точно през четирите върха -->
                         <circle cx="50" cy="63.3" r="41.7" fill="none" stroke="#93c5fd" stroke-width="1.2" stroke-dasharray="2"/>
@@ -542,12 +556,15 @@
             </div>
         </section>
 
+        <!-- СТРАНИЦА 6 -->
+        <div class="page-break"></div>
+
         <!-- GEOMETRY: RIGHT TRAPEZOID -->
-        <section class="mb-12">
+        <section class="mb-12 no-break">
             <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">8. Правоъгълен трапец</h2>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8 no-break">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8">
                 <!-- SVG Правоъгълен трапец -->
-                <div class="w-full md:w-1/3">
+                <div class="w-full md:w-1/3 flex justify-center">
                     <svg class="geom-svg mb-4 max-w-[170px]" viewBox="0 0 100 100">
                         <!-- Трапец -->
                         <polygon points="15,25 65,25 85,75 15,75" fill="#fff1f2" stroke="#e11d48" stroke-width="1.5"/>
@@ -586,7 +603,7 @@
             </div>
             
             <!-- Общи формули за трапец -->
-            <div class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-xl flex flex-wrap justify-around items-center no-break text-center gap-4">
+            <div class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-xl flex flex-wrap justify-around items-center text-center gap-4">
                 <div class="text-sm"><strong>Средна отсечка (основа):</strong> $m = \dfrac{a + b}{2}$</div>
                 <div class="text-sm"><strong>Лице на трапец:</strong> $S = \dfrac{a + b}{2} \cdot h = m \cdot h$</div>
                 <div class="text-sm"><strong>Вписана окръжност:</strong> Диаметърът е равен на височината на трапеца: $2r = h$</div>
