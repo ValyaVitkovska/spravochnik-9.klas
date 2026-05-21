@@ -127,14 +127,15 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 print-grid-2 gap-4">
                 <!-- Алгоритъм -->
-                <div class="card bg-indigo-50 p-4 rounded-lg border border-indigo-100">
-                    <h3 class="text-lg font-bold text-indigo-800 mb-2">Кратък алгоритъм:</h3>
+                <div class="card bg-indigo-50 p-4 rounded-lg border border-indigo-100 flex flex-col justify-center">
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">Алгоритъм:</h3>
                     <ol class="list-decimal pl-4 space-y-1 text-sm text-gray-800">
-                        <li>Преобразуваме до $f(x) \gtrless 0$ и разлагаме на множители.</li>
-                        <li>Намираме корените на скобите.</li>
-                        <li>Нанасяме ги на оста (празни точки при $> / <$, плътни при $\ge / \le$).</li>
-                        <li>Знаци: Най-десният интервал е <strong>$+$</strong>. Редуваме ги наляво.</li>
-                        <li class="text-red-700 font-bold">Изключение: При корен с четна кратност (напр. скоба на квадрат), знакът около него се запазва!</li>
+                        <li>Неравенството се привежда във вид $f(x) \gtrless 0$ и многочленът $f(x)$ се разлага на линейни множители.</li>
+                        <li>Корените на $f(x) = 0$ се нанасят върху числовата ос (празни точки при $> / <$, плътни при $\ge / \le$).</li>
+                        <li><strong>Знаци:</strong> Знакът в <strong>най-десния интервал</strong> съвпада със знака на <strong>старшия коефициент</strong> (произведението от коефициентите пред $x$).</li>
+                        <li>При преминаване през корен с <strong>нечетна</strong> кратност знакът се <strong>променя</strong>.</li>
+                        <li class="text-red-700 font-bold">При преминаване през корен с <strong>четна</strong> кратност (напр. на втора степен), знакът <strong>се запазва</strong>!</li>
+                        <li>Решението е обединението на интервалите, отговарящи на знака на неравенството.</li>
                     </ol>
                 </div>
 
