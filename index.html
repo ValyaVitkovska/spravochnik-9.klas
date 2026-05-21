@@ -18,712 +18,316 @@
 
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
-        .math-box { background: #e0e7ff; border-left: 4px solid #4f46e5; }
-        .geom-svg { width: 100%; max-width: 250px; height: auto; margin: 0 auto; display: block; }
+        .math-box { background: #e0e7ff; border-left: 3px solid #4f46e5; }
+        .geom-svg { width: 100%; max-width: 200px; height: auto; margin: 0 auto; display: block; }
         .solution-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
-        .solution-content.open { max-height: 1500px; }
+        .solution-content.open { max-height: 1000px; }
         
-        /* Предотвратяване на излизане на формули извън контейнерите */
-        .katex-display {
-            overflow-x: auto;
-            overflow-y: hidden;
-            width: 100%;
-            padding: 4px 0;
-        }
+        .katex-display { overflow-x: auto; overflow-y: hidden; width: 100%; padding: 2px 0; margin: 0.25rem 0 !important; }
+        
+        /* Клас за предотвратяване на сцепване на блок на две страници */
+        .card { break-inside: avoid; page-break-inside: avoid; }
 
-        @media screen {
-            .page-break { display: none; }
-        }
-
-        /* СТИЛОВЕ ЗА ПРИНТИРАНЕ (Оптимизирани строго за 6 страници) */
+        /* СТИЛОВЕ ЗА ПРИНТИРАНЕ - МАКСИМАЛНО СБИТИ */
         @media print {
-            @page {
-                margin: 1.2cm; /* По-малки бели полета на хартията */
-            }
+            @page { margin: 1cm; } /* Много малки полета на листа */
+            
             html, body { 
                 background-color: white !important; 
                 color: black !important; 
-                font-size: 10.5pt !important; /* Лек и компактен шрифт */
-                line-height: 1.35 !important;
+                font-size: 9.5pt !important; /* По-малък и компактен шрифт */
+                line-height: 1.25 !important;
                 margin: 0 !important; 
                 padding: 0 !important;
-                height: auto !important;
-                overflow: visible !important;
             }
-            .max-w-5xl {
-                max-width: 100% !important;
-                width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            .bg-white, .bg-gray-50, .bg-indigo-50, .bg-yellow-50, .bg-green-50, .bg-blue-50, .bg-purple-50, .bg-teal-50, .bg-orange-50, .bg-red-50, .math-box { 
+            
+            .bg-white, .bg-indigo-50, .bg-yellow-50, .math-box { 
                 background: white !important; 
                 box-shadow: none !important; 
-                border: 1px solid #ddd !important; 
+                border: 1px solid #ccc !important; 
             }
-            .text-indigo-700, .text-indigo-600, .text-blue-500, .text-teal-500, .text-purple-500, .text-red-600, .text-green-700, .text-blue-700, .text-red-700 { color: black !important; }
+            
+            .text-indigo-700, .text-red-600, .text-blue-600 { color: black !important; font-weight: bold; }
             button, .print-hide { display: none !important; }
             
-            /* Разгъване на решенията без да заемат излишна височина */
-            .solution-content { max-height: none !important; height: auto !important; overflow: visible !important; display: block !important; border-top: none !important; opacity: 1 !important; visibility: visible !important; }
+            /* Решенията са винаги видими и сбити */
+            .solution-content { max-height: none !important; height: auto !important; overflow: visible !important; display: block !important; }
             
-            /* Разделители за страници - гарантират точното прекъсване */
-            .page-break { 
-                page-break-before: always !important; 
-                break-before: always !important; 
-                display: block !important; 
-                height: 0 !important; 
-                margin: 0 !important; 
-                padding: 0 !important;
-            }
-            .no-break { page-break-inside: avoid !important; break-inside: avoid !important; }
-            
-            /* Чертежите да са черно-бели при печат и по-компактни */
+            /* Чертежите стават много по-малки при печат */
             svg polygon, svg circle, svg line, svg rect, svg path { stroke: black !important; fill: none !important; }
-            .geom-svg { max-height: 130px !important; margin-bottom: 0.5rem !important; }
+            .geom-svg { max-height: 100px !important; margin-bottom: 0.2rem !important; }
             
-            /* Оптимизация на решетките за печат - поддържаме ги като колони */
-            .grid-cols-1.md\:grid-cols-2, .grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; display: grid !important; gap: 1rem !important; }
-            .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; display: grid !important; gap: 0.75rem !important; }
+            /* СТРИКТНИ РЕШЕТКИ (GRIDS) ЗА ПЕЧАТ */
+            .print-grid-2 { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 0.5rem !important; }
+            .print-grid-3 { display: grid !important; grid-template-columns: repeat(3, minmax(0, 1fr)) !important; gap: 0.5rem !important; }
             
-            /* ДРАСТИЧНО НАМАЛЯВАНЕ НА ПРАЗНИТЕ ПРОСТРАНСТВА */
-            .p-6, .p-5, .p-4 { padding: 0.6rem !important; }
-            .py-5 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
-            .mb-12 { margin-bottom: 1.25rem !important; }
-            .mb-10, .mb-8, .mb-6 { margin-bottom: 0.75rem !important; }
-            .mb-4, .mb-3 { margin-bottom: 0.25rem !important; }
-            .mt-12 { margin-top: 1rem !important; }
-            .mt-6, .mt-4 { margin-top: 0.5rem !important; }
-            .my-6 { margin-top: 0.5rem !important; margin-bottom: 0.5rem !important; }
+            /* МИНИМАЛНИ ОТСТЪПИ */
+            .p-6, .p-5, .p-4 { padding: 0.4rem !important; }
+            .mb-12, .mb-10, .mb-8, .mb-6 { margin-bottom: 0.5rem !important; }
+            .mb-4, .mb-3, .mb-2 { margin-bottom: 0.2rem !important; }
+            .mt-12, .mt-6, .mt-4 { margin-top: 0.5rem !important; }
+            .gap-8, .gap-6 { gap: 0.5rem !important; }
             
-            h2.text-3xl { font-size: 1.5rem !important; }
-            h3.text-xl { font-size: 1.15rem !important; }
-            h3.text-lg { font-size: 1.05rem !important; }
+            h2.text-3xl { font-size: 1.2rem !important; border-bottom: 1px solid #ccc; margin-bottom: 0.4rem !important; padding-bottom: 0.1rem !important; }
+            h3.text-xl, h3.text-lg { font-size: 1rem !important; margin-bottom: 0.2rem !important; }
         }
     </style>
 </head>
-<body class="text-gray-800 antialiased p-4 md:p-8">
+<body class="text-gray-800 antialiased p-2 md:p-6">
 
     <div class="max-w-5xl mx-auto bg-white md:bg-transparent">
         
-        <!-- Print Button (Hidden on Print) -->
+        <!-- Print Button -->
         <div class="flex justify-end mb-4 print-hide">
-            <button onclick="window.print()" class="bg-gray-800 hover:bg-gray-700 text-white px-5 py-2 rounded-lg shadow font-semibold transition flex items-center">
-                <i class="fa-solid fa-print mr-2"></i> Принтирай справочника
+            <button onclick="window.print()" class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded shadow font-semibold transition flex items-center">
+                <i class="fa-solid fa-print mr-2"></i> Принтирай компактно
             </button>
         </div>
 
-        <!-- СТРАНИЦА 1 -->
         <!-- Header -->
-        <header class="text-center mb-10 no-break">
-            <h1 class="text-4xl md:text-5xl font-bold text-indigo-700 mb-3"><i class="fa-solid fa-book-open text-indigo-500 mr-3 print-hide"></i>Справочник за класна работа №2</h1>
-            <p class="text-lg text-gray-600 font-semibold border-b-2 border-gray-200 pb-4 inline-block px-8">Математика • 9. клас • Алгебра и Геометрия</p>
+        <header class="text-center mb-6">
+            <h1 class="text-3xl md:text-4xl font-bold text-indigo-700 mb-1">Справочник по Математика (9. клас)</h1>
+            <p class="text-sm font-semibold border-b border-gray-300 pb-2 inline-block px-4">Алгебра и Геометрия • Класна работа №2</p>
         </header>
 
         <!-- ALGEBRA: QUADRATIC EQUATIONS -->
-        <section class="mb-12 no-break">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">1. Квадратни уравнения</h2>
+        <section class="mb-6">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-3 border-b-2 border-indigo-200 pb-1">1. Квадратни уравнения</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Квадратно уравнение -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-4">Корени на квадратно уравнение</h3>
-                    <p class="mb-2">Общ вид: $ax^2 + bx + c = 0 \quad (a \neq 0)$</p>
-                    <p class="mb-2">Дискриминанта:</p>
-                    <div class="math-box p-3 rounded mb-4 text-center text-lg">
-                        $$D = b^2 - 4ac$$
-                    </div>
-                    <p class="mb-2">Формула за корените ($D \ge 0$):</p>
-                    <div class="math-box p-3 rounded text-center text-lg">
-                        $$x_{1,2} = \dfrac{-b \pm \sqrt{D}}{2a}$$
+            <div class="grid grid-cols-1 md:grid-cols-2 print-grid-2 gap-4">
+                <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-bold text-indigo-700 mb-2">Корени и Дискриминанта</h3>
+                    <p class="text-sm mb-1">Уравнение: $ax^2 + bx + c = 0 \quad (a \neq 0)$</p>
+                    <div class="math-box p-2 rounded text-center text-sm">
+                        <span class="font-bold">Дискриминанта:</span> $$D = b^2 - 4ac$$
+                        <span class="font-bold">Корени ($D \ge 0$):</span> $$x_{1,2} = \dfrac{-b \pm \sqrt{D}}{2a}$$
                     </div>
                 </div>
 
-                <!-- Разлагане -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-4">Разлагане на квадратен тричлен</h3>
-                    <p class="mb-4">Ако уравнението $ax^2 + bx + c = 0$ има корени $x_1$ и $x_2$, тричленът се разлага по формулата:</p>
-                    <div class="math-box p-4 rounded mb-6 text-center text-lg md:text-xl font-semibold overflow-x-auto">
+                <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-bold text-indigo-700 mb-2">Разлагане на квадратен тричлен</h3>
+                    <p class="text-sm mb-1">Ако $x_1$ и $x_2$ са корени на уравнението:</p>
+                    <div class="math-box p-2 rounded text-center font-bold text-sm">
                         $$ax^2 + bx + c = a(x - x_1)(x - x_2)$$
                     </div>
-                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 text-sm">
-                        <strong>Внимание!</strong> Не забравяй коефициента <strong>$a$</strong> отпред! Ако $D = 0$, то $x_1 = x_2$ и формулата става $a(x - x_1)^2$.
-                    </div>
+                    <p class="text-xs mt-1 text-gray-600"><em>Внимание: Не забравяй коефициента $a$! Ако $D=0 \Rightarrow a(x-x_1)^2$.</em></p>
                 </div>
             </div>
         </section>
 
-        <!-- ALGEBRA: METHOD OF INTERVALS - ALGO -->
-        <section class="mb-12 no-break">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">2. Метод на интервалите</h2>
+        <!-- ALGEBRA: METHOD OF INTERVALS -->
+        <section class="mb-6">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-3 border-b-2 border-indigo-200 pb-1">2. Метод на интервалите</h2>
             
-            <!-- Алгоритъм -->
-            <div class="bg-indigo-50 p-6 rounded-xl border border-indigo-100 mb-6">
-                <h3 class="text-xl font-bold text-indigo-800 mb-3">Алгоритъм за решаване</h3>
-                <ol class="list-decimal pl-5 space-y-2 text-gray-700">
-                    <li><strong>Подготовка:</strong> Преобразуваме неравенството, така че отдясно да има нула: $f(x) \gtrless 0$.</li>
-                    <li><strong>Разлагане:</strong> Разлагаме $f(x)$ на линейни множители. Неравенството трябва да има вида: $(x - x_1)(x - x_2)...(x - x_n) \gtrless 0$. Ако пред $x$ има минус, умножаваме по $(-1)$ и <strong>обръщаме знака</strong>.</li>
-                    <li><strong>Корени:</strong> Намираме корените, при които всяка скоба става нула.</li>
-                    <li><strong>Нанасяне на оста:</strong> 
-                        <ul class="list-disc pl-5 mt-1 text-sm text-gray-600">
-                            <li>Ако неравенството е строго ($>$ или $<$), точките са <strong>празни</strong>.</li>
-                            <li>Ако е нестрого ($\ge$ или $\le$), точките са <strong>плътни</strong>.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Определяне на знаците:</strong> 
-                        Най-десният интервал винаги е със знак <strong>$+$</strong>. Движейки се наляво, сменяме знака при преминаване през всеки корен.<br>
-                        <span class="text-red-600 font-semibold"><i class="fa-solid fa-triangle-exclamation mr-1 print-hide"></i> Важно изключение:</span> Ако коренът е с <strong>четна кратност</strong> (напр. скоба на квадрат $(x-a)^2$ или на четвърта степен), знакът около него <strong>НЕ се променя</strong>.
-                    </li>
-                    <li><strong>Решение:</strong> Записваме интервалите, отговарящи на знака на неравенството.</li>
-                </ol>
-            </div>
-        </section>
-
-        <!-- СТРАНИЦА 2 -->
-        <div class="page-break"></div>
-        
-        <section class="mb-12">
-            <!-- Задачи: Цели неравенства -->
-            <div class="space-y-6">
-                <!-- Задача 1: Класическо -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden no-break">
-                    <div class="p-5 flex justify-between items-center bg-gray-50 border-b border-gray-100">
-                        <div class="text-lg"><strong>Пример 1:</strong> Решете неравенството $(x + 3)(x - 1)(x - 5) \le 0$</div>
-                        <button onclick="toggleSolution('sol1')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded transition text-sm print-hide">Виж решението</button>
-                    </div>
-                    <div id="sol1" class="solution-content px-6 bg-white">
-                        <div class="py-5">
-                            <p class="mb-3"><strong>1. Корени:</strong> Нулираме всяка скоба: $x_1 = -3$, $x_2 = 1$, $x_3 = 5$. Всички са с нечетна кратност.</p>
-                            <p class="mb-2"><strong>2. Числова ос:</strong> Нанасяме ги. Тъй като неравенството е $\le$, точките са <strong>плътни</strong>.</p>
-                            
-                            <!-- Чертеж на оста -->
-                            <div class="my-6 relative h-16 max-w-lg mx-auto">
-                                <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-800 -mt-0.5"></div>
-                                <div class="absolute top-1/2 left-[20%] w-3 h-3 bg-gray-800 rounded-full -mt-1.5 transform -translate-x-1/2"></div>
-                                <div class="absolute top-full left-[20%] text-center w-8 -ml-4 mt-1">$-3$</div>
-                                <div class="absolute top-1/2 left-[50%] w-3 h-3 bg-gray-800 rounded-full -mt-1.5 transform -translate-x-1/2"></div>
-                                <div class="absolute top-full left-[50%] text-center w-8 -ml-4 mt-1">$1$</div>
-                                <div class="absolute top-1/2 left-[80%] w-3 h-3 bg-gray-800 rounded-full -mt-1.5 transform -translate-x-1/2"></div>
-                                <div class="absolute top-full left-[80%] text-center w-8 -ml-4 mt-1">$5$</div>
-                                <!-- Знаци -->
-                                <div class="absolute top-0 left-[10%] text-blue-600 font-bold text-xl">$-$</div>
-                                <div class="absolute top-0 left-[35%] text-red-600 font-bold text-xl">$+$</div>
-                                <div class="absolute top-0 left-[65%] text-blue-600 font-bold text-xl">$-$</div>
-                                <div class="absolute top-0 left-[90%] text-red-600 font-bold text-xl">$+$</div>
-                            </div>
-
-                            <p class="mb-3"><strong>3. Знаци:</strong> Най-вдясно е $+$. Знаците се редуват: $+ \rightarrow - \rightarrow + \rightarrow -$. Търсим минус ($\le 0$).</p>
-                            <div class="math-box p-3 rounded mt-2 text-center font-bold text-lg">Отговор: $x \in (-\infty; -3] \cup [1; 5]$</div>
-                        </div>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 print-grid-2 gap-4">
+                <!-- Алгоритъм -->
+                <div class="card bg-indigo-50 p-4 rounded-lg border border-indigo-100">
+                    <h3 class="text-lg font-bold text-indigo-800 mb-2">Кратък алгоритъм:</h3>
+                    <ol class="list-decimal pl-4 space-y-1 text-sm text-gray-800">
+                        <li>Преобразуваме до $f(x) \gtrless 0$ и разлагаме на множители.</li>
+                        <li>Намираме корените на скобите.</li>
+                        <li>Нанасяме ги на оста (празни точки при $> / <$, плътни при $\ge / \le$).</li>
+                        <li>Знаци: Най-десният интервал е <strong>$+$</strong>. Редуваме ги наляво.</li>
+                        <li class="text-red-700 font-bold">Изключение: При корен с четна кратност (напр. скоба на квадрат), знакът около него се запазва!</li>
+                    </ol>
                 </div>
 
-                <!-- Задача 2: Двоен корен -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden no-break">
-                    <div class="p-5 flex justify-between items-center bg-gray-50 border-b border-gray-100">
-                        <div class="text-lg"><strong>Пример 2 (С четна кратност):</strong> Решете неравенството $(x^2 - 4x + 4)(x + 2) > 0$</div>
-                        <button onclick="toggleSolution('sol2')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded transition text-sm print-hide">Виж решението</button>
+                <!-- Примери -->
+                <div class="card bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col justify-center">
+                    <div class="mb-3">
+                        <strong class="text-sm">Пример 1 (Класически):</strong> $(x+3)(x-1)(x-5) \le 0$<br>
+                        <span class="text-xs text-gray-600">Корени: $-3, 1, 5$ (плътни). Знаци: $+ \rightarrow - \rightarrow + \rightarrow -$. Търсим ($-$).</span><br>
+                        <span class="font-bold text-sm bg-gray-100 px-2 py-1 rounded">Отг: $x \in (-\infty; -3] \cup [1; 5]$</span>
                     </div>
-                    <div id="sol2" class="solution-content px-6 bg-white">
-                        <div class="py-5">
-                            <p class="mb-3"><strong>1. Разлагане:</strong> Първата скоба е $(x - 2)^2$. Получаваме: <strong>$(x - 2)^2(x + 2) > 0$</strong></p>
-                            <p class="mb-2"><strong>2. Корени:</strong> $x_1 = 2$ (корен с <strong>четна кратност</strong>!), $x_2 = -2$ (прост корен). Точките са <strong>празни</strong> ($> 0$).</p>
-                            
-                            <!-- Чертеж на оста -->
-                            <div class="my-6 relative h-16 max-w-lg mx-auto">
-                                <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-800 -mt-0.5"></div>
-                                <div class="absolute top-1/2 left-[30%] w-3 h-3 bg-white border-2 border-gray-800 rounded-full -mt-1.5 transform -translate-x-1/2"></div>
-                                <div class="absolute top-full left-[30%] text-center w-8 -ml-4 mt-1">$-2$</div>
-                                <div class="absolute top-1/2 left-[70%] w-3 h-3 bg-white border-2 border-gray-800 rounded-full -mt-1.5 transform -translate-x-1/2"></div>
-                                <div class="absolute top-full left-[70%] text-center w-8 -ml-4 mt-1">$2$</div>
-                                <div class="absolute top-8 left-[70%] text-xs text-red-500 font-bold transform -translate-x-1/2 text-center whitespace-nowrap">четна<br>кратност</div>
-                                <!-- Знаци -->
-                                <div class="absolute top-0 left-[15%] text-blue-600 font-bold text-xl">$-$</div>
-                                <div class="absolute top-0 left-[50%] text-red-600 font-bold text-xl">$+$</div>
-                                <div class="absolute top-0 left-[85%] text-red-600 font-bold text-xl">$+$</div>
-                            </div>
-
-                            <p class="mb-3"><strong>3. Знаци:</strong> Най-вдясно е $+$. При преминаване през $x=2$ <strong>знакът се запазва</strong> (+). През $x=-2$ се сменя на ($-$). Търсим плюс ($> 0$). Внимаваме: точката $2$ не е решение!</p>
-                            <div class="math-box p-3 rounded mt-2 text-center font-bold text-lg">Отговор: $x \in (-2; 2) \cup (2; +\infty)$</div>
-                        </div>
+                    <div>
+                        <strong class="text-sm">Пример 2 (Четна кратност):</strong> $(x-2)^2(x+2) > 0$<br>
+                        <span class="text-xs text-gray-600">Корени: $2$ (четна кр.), $-2$. Знаци: през $x=2$ се запазва $+$, през $x=-2$ става $-$. Търсим ($+$), но $x \neq 2$.</span><br>
+                        <span class="font-bold text-sm bg-gray-100 px-2 py-1 rounded">Отг: $x \in (-2; 2) \cup (2; +\infty)$</span>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- СТРАНИЦА 3 -->
-        <div class="page-break"></div>
 
         <!-- GEOMETRY: SIMILAR TRIANGLES, THALES, BISECTOR -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">3. Пропорции и подобни триъгълници</h2>
+        <section class="mb-6">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-3 border-b-2 border-indigo-200 pb-1">3. Пропорции и подобни триъгълници</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 no-break">
-                <!-- Определение и признаци -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-4">Признаци за подобност</h3>
-                    <p class="mb-4 text-gray-700">Два триъгълника са <strong>подобни</strong> ($\triangle ABC \sim \triangle A_1B_1C_1$), ако ъглите им са съответно равни и страните им са пропорционални.</p>
-                    <ul class="space-y-3 text-sm text-gray-800">
-                        <li class="bg-gray-50 p-3 border-l-4 border-blue-400 rounded"><strong>Първи признак:</strong> Два ъгъла на единия са равни на два ъгъла от другия ($\angle A = \angle A_1$ и $\angle B = \angle B_1$).</li>
-                        <li class="bg-gray-50 p-3 border-l-4 border-green-400 rounded"><strong>Втори признак:</strong> Две страни са пропорционални и ъгълът заключен между тях е равен.</li>
-                        <li class="bg-gray-50 p-3 border-l-4 border-yellow-400 rounded"><strong>Трети признак:</strong> Трите им страни са съответно пропорционални.</li>
+            <div class="grid grid-cols-1 md:grid-cols-3 print-grid-3 gap-4">
+                <!-- Признаци -->
+                <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-bold text-indigo-700 mb-1">Признаци за подобност</h3>
+                    <ul class="list-disc pl-4 text-xs space-y-1 mb-2">
+                        <li><strong>I:</strong> Два ъгъла са съответно равни.</li>
+                        <li><strong>II:</strong> Две страни са пропорционални и ъгълът между тях е равен.</li>
+                        <li><strong>III:</strong> Трите страни са пропорционални.</li>
                     </ul>
-                    <div class="mt-4 p-4 bg-indigo-50 border border-indigo-100 rounded text-sm overflow-x-auto">
-                        <strong class="text-base text-indigo-900">Коефициент на подобност ($k$):</strong><br>
-                        <p class="mb-2 mt-1 text-gray-700">Отношението на съответните линейни елементи (страни, периметри, височини, медиани, ъглополовящи, радиуси на вписана и описана окръжности) е равно на $k$:</p>
-                        <div class="font-semibold text-center mb-3">
-                            $$\dfrac{a}{a_1} = \dfrac{P}{P_1} = \dfrac{h}{h_1} = \dfrac{m}{m_1} = \dfrac{l}{l_1} = \dfrac{r}{r_1} = \dfrac{R}{R_1} = \mathbf{k}$$
-                        </div>
-                        <p class="text-gray-700"><strong>Отношение на лицата:</strong> $\dfrac{S}{S_1} = \mathbf{k^2}$</p>
+                    <div class="bg-gray-50 p-2 rounded text-xs text-center border border-gray-200">
+                        <strong>Коефициент ($k$):</strong>
+                        $$\dfrac{a}{a_1} = \dfrac{h}{h_1} = \dfrac{P}{P_1} = \dfrac{R}{R_1} = \mathbf{k}$$
+                        Лица: $\dfrac{S}{S_1} = \mathbf{k^2}$
                     </div>
                 </div>
 
-                <!-- Свойства и Чертеж -->
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col items-center">
-                    <h3 class="text-xl font-bold text-indigo-700 mb-4 w-full text-left">Свойство на ъглополовящата</h3>
-                    <!-- SVG Ъглополовяща -->
-                    <svg class="w-full max-w-[200px] h-auto mb-4" viewBox="0 0 100 80">
-                        <polygon points="10,70 90,70 40,10" fill="#e0e7ff" stroke="#3b82f6" stroke-width="2"/>
-                        <!-- Ъглополовяща от C към AB -->
-                        <line x1="40" y1="10" x2="52" y2="70" stroke="#ef4444" stroke-width="2" stroke-dasharray="3"/>
-                        <text x="5" y="78" font-size="8" font-family="sans-serif">A</text>
-                        <text x="92" y="78" font-size="8" font-family="sans-serif">B</text>
-                        <text x="38" y="8" font-size="8" font-family="sans-serif">C</text>
-                        <text x="48" y="79" font-size="8" fill="#ef4444" font-family="sans-serif">L</text>
-                        <path d="M 37 14 A 8 8 0 0 0 42 19" fill="none" stroke="#16a34a" stroke-width="1.5"/>
-                        <path d="M 41 18 A 8 8 0 0 0 45 13" fill="none" stroke="#16a34a" stroke-width="1.5"/>
+                <!-- Ъглополовяща -->
+                <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-center">
+                    <h3 class="text-lg font-bold text-indigo-700 mb-1">Ъглополовяща</h3>
+                    <svg class="geom-svg mb-1" viewBox="0 0 100 65">
+                        <polygon points="10,60 90,60 40,10" fill="#e0e7ff" stroke="#3b82f6" stroke-width="1.5"/>
+                        <line x1="40" y1="10" x2="52" y2="60" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3"/>
+                        <text x="5" y="65" font-size="7">A</text> <text x="92" y="65" font-size="7">B</text>
+                        <text x="38" y="7" font-size="7">C</text> <text x="48" y="66" font-size="7" fill="#ef4444">L</text>
                     </svg>
-
-                    <p class="text-sm text-gray-700 text-center mb-3">Ъглополовящата дели срещуположната страна на части, пропорционални на прилежащите страни.</p>
-                    <div class="math-box w-full p-3 rounded mb-2 text-center font-bold text-lg">
-                        $$\dfrac{AL}{LB} = \dfrac{AC}{BC}$$
-                    </div>
+                    <p class="text-xs mb-1">Дели страната на части, пропорционални на бедрата:</p>
+                    <div class="math-box p-1 rounded font-bold text-sm">$$\dfrac{AL}{LB} = \dfrac{AC}{BC}$$</div>
                 </div>
-            </div>
 
-            <!-- Теорема на Талес -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 no-break">
-                <h3 class="text-xl font-bold text-indigo-700 mb-4">Теорема на Талес</h3>
-                <div class="flex flex-col md:flex-row items-center gap-6">
-                    <!-- SVG Талес -->
-                    <svg class="geom-svg max-w-[200px]" viewBox="0 0 100 100">
-                        <line x1="10" y1="50" x2="90" y2="10" stroke="#3b82f6" stroke-width="1.5"/>
-                        <line x1="10" y1="50" x2="90" y2="90" stroke="#3b82f6" stroke-width="1.5"/>
-                        <line x1="45" y1="15" x2="35" y2="85" stroke="#ef4444" stroke-width="1.5"/>
-                        <line x1="80" y1="5" x2="70" y2="95" stroke="#ef4444" stroke-width="1.5"/>
-                        <text x="5" y="52" font-size="8" font-family="sans-serif">O</text>
-                        <text x="38" y="25" font-size="8" font-family="sans-serif">A</text>
-                        <text x="29" y="74" font-size="8" font-family="sans-serif">B</text>
-                        <text x="73" y="12" font-size="8" font-family="sans-serif">C</text>
-                        <text x="64" y="90" font-size="8" font-family="sans-serif">D</text>
+                <!-- Талес -->
+                <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-center">
+                    <h3 class="text-lg font-bold text-indigo-700 mb-1">Теорема на Талес</h3>
+                    <svg class="geom-svg mb-1" viewBox="0 0 100 65">
+                        <line x1="10" y1="32" x2="90" y2="10" stroke="#3b82f6" stroke-width="1.5"/>
+                        <line x1="10" y1="32" x2="90" y2="60" stroke="#3b82f6" stroke-width="1.5"/>
+                        <line x1="45" y1="15" x2="35" y2="50" stroke="#ef4444" stroke-width="1.5"/>
+                        <line x1="80" y1="5" x2="70" y2="65" stroke="#ef4444" stroke-width="1.5"/>
+                        <text x="5" y="34" font-size="7">O</text>
                     </svg>
-                    <div>
-                        <p class="text-gray-700 mb-3">Ако раменете на един ъгъл бъдат пресечени от успоредни прави ($AB \parallel CD$), то те отсичат от раменете пропорционални отсечки.</p>
-                        <div class="math-box p-3 rounded text-center text-lg font-bold inline-block">
-                            $$\dfrac{OA}{AC} = \dfrac{OB}{BD} \quad \text{или} \quad \dfrac{OA}{OC} = \dfrac{OB}{OD}$$
-                        </div>
-                    </div>
+                    <p class="text-xs mb-1">Успоредни прави отсичат пропорционални отсечки:</p>
+                    <div class="math-box p-1 rounded font-bold text-sm">$$\dfrac{OA}{AC} = \dfrac{OB}{BD}$$</div>
                 </div>
             </div>
         </section>
 
-        <!-- СТРАНИЦА 4 -->
-        <div class="page-break"></div>
-
-        <!-- GEOMETRY: RIGHT TRIANGLE -->
-        <section class="mb-12">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">4. Метрични зависимости в правоъгълен триъгълник</h2>
+        <!-- GEOMETRY: RIGHT TRIANGLE & POINTS -->
+        <section class="mb-6">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-3 border-b-2 border-indigo-200 pb-1">4. Правоъгълен триъгълник и Забележителни точки</h2>
             
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 border-t-4 border-teal-500 flex flex-col md:flex-row items-center gap-8 no-break">
-                <!-- SVG Правоъгълен триъгълник -->
-                <div class="w-full md:w-1/3 flex justify-center">
-                    <svg class="geom-svg w-full max-w-[220px]" viewBox="0 0 100 65">
-                        <polygon points="10,60 90,60 30,20" fill="#ccfbf1" stroke="#0f766e" stroke-width="1.5"/>
-                        <line x1="30" y1="20" x2="30" y2="60" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3"/>
-                        <polygon points="30,20 26,28 34,32 38,24" fill="none" stroke="#0f766e" stroke-width="1"/>
-                        <circle cx="32" cy="26" r="1" fill="#0f766e"/>
-                        <rect x="30" y="55" width="5" height="5" fill="none" stroke="#ef4444" stroke-width="1"/>
-                        <text x="5" y="65" font-size="6" font-family="sans-serif">A</text>
-                        <text x="92" y="65" font-size="6" font-family="sans-serif">B</text>
-                        <text x="28" y="15" font-size="6" font-family="sans-serif">C</text>
-                        <text x="28" y="68" font-size="6" font-family="sans-serif">H</text>
-                        <text x="15" y="38" font-size="6" font-family="sans-serif">b</text>
-                        <text x="60" y="38" font-size="6" font-family="sans-serif">a</text>
-                        <text x="25" y="40" fill="#ef4444" font-size="6" font-family="sans-serif">h_c</text>
-                        <text x="20" y="58" font-size="5" font-family="sans-serif">b₁</text>
-                        <text x="60" y="58" font-size="5" font-family="sans-serif">a₁</text>
-                        <path d="M 10 73 L 90 73" stroke="#94a3b8" stroke-width="0.5"/>
-                        <line x1="10" y1="71" x2="10" y2="75" stroke="#94a3b8" stroke-width="0.5"/>
-                        <line x1="90" y1="71" x2="90" y2="75" stroke="#94a3b8" stroke-width="0.5"/>
-                        <text x="48" y="72" font-size="6" fill="#64748b" font-family="sans-serif">c</text>
-                    </svg>
+            <div class="grid grid-cols-1 md:grid-cols-2 print-grid-2 gap-4">
+                <!-- Правоъгълен триъгълник -->
+                <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200 border-t-4 border-teal-500 flex flex-col md:flex-row items-center gap-3">
+                    <div class="w-full md:w-1/2">
+                        <svg class="geom-svg w-full" viewBox="0 0 100 65">
+                            <polygon points="10,60 90,60 30,20" fill="#ccfbf1" stroke="#0f766e" stroke-width="1.5"/>
+                            <line x1="30" y1="20" x2="30" y2="60" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="2"/>
+                            <rect x="30" y="56" width="4" height="4" fill="none" stroke="#ef4444" stroke-width="1"/>
+                            <text x="5" y="65" font-size="6">A</text> <text x="92" y="65" font-size="6">B</text> <text x="28" y="15" font-size="6">C</text>
+                            <text x="18" y="38" font-size="6">b</text> <text x="65" y="38" font-size="6">a</text> <text x="48" y="70" font-size="6">c</text>
+                            <text x="20" y="58" font-size="5">b₁</text> <text x="60" y="58" font-size="5">a₁</text> <text x="25" y="45" font-size="5" fill="#ef4444">h_c</text>
+                        </svg>
+                    </div>
+                    <div class="w-full md:w-1/2 text-xs space-y-1">
+                        <div class="border-b pb-1"><strong>Питагор:</strong> $a^2 + b^2 = c^2$</div>
+                        <div class="border-b pb-1"><strong>Височина:</strong> $h_c^2 = a_1 \cdot b_1$</div>
+                        <div class="border-b pb-1"><strong>Катети:</strong> $a^2 = c \cdot a_1$, $b^2 = c \cdot b_1$</div>
+                        <div class="border-b pb-1"><strong>Радиуси:</strong> $R = \dfrac{c}{2}, \ r = \dfrac{a+b-c}{2}$</div>
+                        <div><strong>Лице:</strong> $S = \dfrac{ab}{2} = \dfrac{c h_c}{2} = p \cdot r$</div>
+                    </div>
                 </div>
 
-                <!-- Формули -->
-                <div class="w-full md:w-2/3 text-base md:text-lg">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
-                        <!-- Лява колона -->
-                        <div>
-                            <p class="border-b pb-2"><strong>Височина към хипотенузата:</strong><br> $$h_c^2 = a_1 \cdot b_1$$</p>
-                            <p class="border-b pb-2 mt-3"><strong>Катети:</strong><br> $$a^2 = c \cdot a_1 \quad b^2 = c \cdot b_1$$</p>
-                            <p class="mt-3"><strong>Питагорова теорема:</strong><br> $$a^2 + b^2 = c^2$$</p>
-                        </div>
-                        <!-- Дясна колона -->
-                        <div>
-                            <p class="border-b pb-2"><strong>Радиуси ($R, r$):</strong><br> $$R = \dfrac{c}{2} \quad r = \dfrac{a + b - c}{2}$$</p>
-                            <p class="border-b pb-2 mt-3"><strong>Лице:</strong><br> $$S = \dfrac{a \cdot b}{2} = \dfrac{c \cdot h_c}{2}$$</p>
-                            <div class="mt-3 w-full">
-                                <strong>Лице чрез радиус:</strong>
-                                <div class="overflow-x-auto overflow-y-hidden max-w-full">
-                                    <div class="py-1">$$S = p \cdot r$$</div>
-                                </div>
-                                <div class="text-sm text-center text-gray-600 -mt-2 pb-1">където $p = \dfrac{a+b+c}{2}$</div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Забележителни точки -->
+                <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-2 border-b pb-1">4-те забележителни точки</h3>
+                    <ul class="text-sm space-y-2 text-gray-700">
+                        <li><strong class="text-orange-600">G (Медицентър):</strong> Пресечна точка на медианите. Дели ги в отношение 2:1 от върха.</li>
+                        <li><strong class="text-red-600">H (Ортоцентър):</strong> Пресечна точка на височините.</li>
+                        <li><strong class="text-blue-600">O (Център описана окр.):</strong> Пресечна точка на <strong>симетралите</strong>. Радиус $R$.</li>
+                        <li><strong class="text-green-600">I (Център вписана окр.):</strong> Пресечна точка на <strong>ъглополовящите</strong>. Радиус $r$.</li>
+                    </ul>
                 </div>
             </div>
         </section>
 
-        <!-- GEOMETRY: REMARKABLE POINTS -->
-        <section class="mb-12 no-break">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">5. Забележителни точки в триъгълника</h2>
+        <!-- GEOMETRY: ISOSCELES & TRAPEZOIDS -->
+        <section class="mb-6">
+            <h2 class="text-3xl font-semibold text-gray-800 mb-3 border-b-2 border-indigo-200 pb-1">5. Свойства на равнобедрен триъгълник и трапеци</h2>
             
-            <!-- Основни елементи в триъгълника -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mb-8 flex flex-col md:flex-row items-center gap-8">
-                <!-- SVG -->
-                <svg class="w-full max-w-[280px]" viewBox="0 0 100 105">
-                    <polygon points="10,80 90,80 40,20" fill="#e0e7ff" stroke="#3b82f6" stroke-width="1.5"/>
-
-                    <!-- Височина -->
-                    <line x1="40" y1="20" x2="40" y2="80" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="2"/>
-                    <rect x="40" y="76" width="4" height="4" fill="none" stroke="#ef4444" stroke-width="1"/>
-                    <text x="38" y="88" font-size="6" font-family="sans-serif" fill="#ef4444">H</text>
-
-                    <!-- Ъглополовяща -->
-                    <line x1="40" y1="20" x2="48" y2="80" stroke="#16a34a" stroke-width="1.5" stroke-dasharray="2"/>
-                    <text x="47" y="88" font-size="6" font-family="sans-serif" fill="#16a34a">L</text>
-
-                    <!-- Медиана -->
-                    <line x1="40" y1="20" x2="50" y2="80" stroke="#f97316" stroke-width="1.5" stroke-dasharray="2"/>
-                    <text x="51" y="88" font-size="6" font-family="sans-serif" fill="#f97316">M</text>
-
-                    <text x="5" y="85" font-size="8" font-family="sans-serif">A</text>
-                    <text x="92" y="85" font-size="8" font-family="sans-serif">B</text>
-                    <text x="38" y="15" font-size="8" font-family="sans-serif">C</text>
-
-                    <text x="20" y="48" font-size="7" font-family="sans-serif" fill="#3b82f6">b</text>
-                    <text x="70" y="48" font-size="7" font-family="sans-serif" fill="#3b82f6">a</text>
-
-                    <path d="M 10 92 L 90 92" stroke="#94a3b8" stroke-width="0.5"/>
-                    <line x1="10" y1="90" x2="10" y2="94" stroke="#94a3b8" stroke-width="0.5"/>
-                    <line x1="90" y1="90" x2="90" y2="94" stroke="#94a3b8" stroke-width="0.5"/>
-                    <text x="48" y="100" font-size="7" font-family="sans-serif" fill="#64748b">c</text>
-
-                    <text x="32" y="55" font-size="6" font-family="sans-serif" fill="#ef4444">h<tspan dy="2" font-size="4">c</tspan></text>
-                    <text x="42" y="65" font-size="6" font-family="sans-serif" fill="#16a34a">l<tspan dy="2" font-size="4">c</tspan></text>
-                    <text x="51" y="55" font-size="6" font-family="sans-serif" fill="#f97316">m<tspan dy="2" font-size="4">c</tspan></text>
-
-                    <path d="M 37 24 A 6 6 0 0 0 41 27" fill="none" stroke="#16a34a" stroke-width="1"/>
-                    <path d="M 40 27 A 6 6 0 0 0 44 24" fill="none" stroke="#16a34a" stroke-width="1"/>
-
-                    <line x1="28" y1="78" x2="32" y2="82" stroke="#f97316" stroke-width="1.5"/>
-                    <line x1="68" y1="78" x2="72" y2="82" stroke="#f97316" stroke-width="1.5"/>
-                </svg>
-                
-                <div class="space-y-4 w-full">
-                    <p class="text-gray-700">Във всеки триъгълник $\triangle ABC$ бележим страните с малките букви на срещуположните върхове ($a$, $b$, $c$).</p>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <span class="text-red-500 font-bold w-32 shrink-0"><i class="fa-solid fa-ruler-vertical mr-2"></i> Височина ($h_c$):</span>
-                            <span class="text-gray-600">Отсечка, спусната перпендикулярно от върха към срещуположната страна.</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-green-600 font-bold w-32 shrink-0"><i class="fa-solid fa-angle-left mr-2"></i> Ъглополовяща ($l_c$):</span>
-                            <span class="text-gray-600">Отсечка, разделяща ъгъла на две равни части.</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-orange-500 font-bold w-32 shrink-0"><i class="fa-solid fa-arrows-to-dot mr-2"></i> Медиана ($m_c$):</span>
-                            <span class="text-gray-600">Отсечка, съединяваща върха със средата на срещуположната страна.</span>
-                        </li>
+            <div class="grid grid-cols-1 md:grid-cols-3 print-grid-3 gap-4">
+                <!-- Равнобедрен триъгълник -->
+                <div class="card bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="text-base font-bold text-center text-indigo-700 mb-1">Равнобедрен $\triangle$</h3>
+                    <svg class="geom-svg max-w-[120px] mb-2" viewBox="0 0 100 90">
+                        <polygon points="50,10 15,80 85,80" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+                        <line x1="50" y1="10" x2="50" y2="80" stroke="#ea580c" stroke-width="1.2" stroke-dasharray="2"/>
+                        <text x="47" y="7" font-size="7">C</text> <text x="8" y="85" font-size="7">A</text> <text x="88" y="85" font-size="7">B</text>
+                        <text x="25" y="45" font-size="7">b</text> <text x="70" y="45" font-size="7">b</text> <text x="48" y="88" font-size="7">c</text>
+                    </svg>
+                    <ul class="text-xs space-y-1 text-gray-700">
+                        <li><strong>Бедра:</strong> $AC=BC=b$. Основа: $c$.</li>
+                        <li><strong>Ъгли:</strong> $\angle A = \angle B$.</li>
+                        <li><strong>Свойство:</strong> Към основата $c$, отсечките $h_c$, $m_c$, $l_c$ и симетралата <strong>съвпадат</strong>.</li>
+                        <li>Центровете $I$ и $O$ лежат на $h_c$.</li>
                     </ul>
                 </div>
-            </div>
 
-            <!-- 4-те забележителни точки -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <div class="flex items-center mb-2">
-                        <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-xl mr-3">G</div>
-                        <h4 class="font-bold text-lg text-gray-800">Медицентър</h4>
-                    </div>
-                    <p class="text-sm text-gray-600">Пресечната точка на трите <strong>медиани</strong>. Медицентърът дели всяка медиана в отношение <strong>2:1</strong>, считано от върха към страната.</p>
-                </div>
-
-                <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <div class="flex items-center mb-2">
-                        <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-xl mr-3">H</div>
-                        <h4 class="font-bold text-lg text-gray-800">Ортоцентър</h4>
-                    </div>
-                    <p class="text-sm text-gray-600">Пресечната точка на трите <strong>височини</strong>.</p>
-                </div>
-
-                <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <div class="flex items-center mb-2">
-                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xl mr-3">O</div>
-                        <h4 class="font-bold text-lg text-gray-800">Център на описаната окръжност</h4>
-                    </div>
-                    <p class="text-sm text-gray-600">Пресечната точка на трите <strong>симетрали</strong>. Намира се на равни разстояния от върховете ($R$).</p>
-                </div>
-
-                <div class="bg-white p-5 rounded-lg border border-gray-200 shadow-sm">
-                    <div class="flex items-center mb-2">
-                        <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-bold text-xl mr-3">I</div>
-                        <h4 class="font-bold text-lg text-gray-800">Център на вписаната окръжност</h4>
-                    </div>
-                    <p class="text-sm text-gray-600">Пресечната точка на трите <strong>ъглополовящи</strong>. Намира се на равни разстояния от страните ($r$).</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- СТРАНИЦА 5 -->
-        <div class="page-break"></div>
-
-        <!-- GEOMETRY: ISOSCELES TRIANGLE -->
-        <section class="mb-12 no-break">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">6. Равнобедрен триъгълник</h2>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8">
-                <!-- SVG Равнобедрен триъгълник -->
-                <div class="w-full md:w-1/3 flex justify-center">
-                    <svg class="geom-svg max-w-[170px]" viewBox="0 0 100 100">
-                        <!-- Описана окръжност -->
-                        <circle cx="50" cy="55.2" r="40.2" fill="none" stroke="#93c5fd" stroke-width="1" stroke-dasharray="2"/>
-                        <!-- Триъгълник -->
-                        <polygon points="50,15 15,75 85,75" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
-                        <!-- Вписана окръжност -->
-                        <circle cx="50" cy="54.9" r="20.1" fill="none" stroke="#f43f5e" stroke-width="1" stroke-dasharray="2"/>
-                        <!-- Височина/Медиана/Симетрала -->
-                        <line x1="50" y1="15" x2="50" y2="75" stroke="#ea580c" stroke-width="1.2" stroke-dasharray="3"/>
-                        
-                        <text x="47" y="10" font-size="7" font-family="sans-serif">C</text>
-                        <text x="8" y="78" font-size="7" font-family="sans-serif">A</text>
-                        <text x="88" y="78" font-size="7" font-family="sans-serif">B</text>
-                        <text x="48" y="83" font-size="7" fill="#ea580c" font-family="sans-serif">H</text>
-                        <text x="25" y="45" font-size="7" font-family="sans-serif">b</text>
-                        <text x="70" y="45" font-size="7" font-family="sans-serif">b</text>
-                        <text x="48" y="94" font-size="7" font-family="sans-serif">c</text>
+                <!-- Равнобедрен трапец -->
+                <div class="card bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="text-base font-bold text-center text-indigo-700 mb-1">Равнобедрен трапец</h3>
+                    <svg class="geom-svg max-w-[120px] mb-2" viewBox="0 0 100 90">
+                        <polygon points="25,25 75,25 90,80 10,80" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+                        <line x1="25" y1="25" x2="25" y2="80" stroke="#ef4444" stroke-width="1" stroke-dasharray="2"/>
+                        <line x1="75" y1="25" x2="75" y2="80" stroke="#ef4444" stroke-width="1" stroke-dasharray="2"/>
+                        <text x="21" y="21" font-size="7">D</text> <text x="75" y="21" font-size="7">C</text>
+                        <text x="5" y="85" font-size="7">A</text> <text x="92" y="85" font-size="7">B</text>
                     </svg>
-                </div>
-
-                <!-- Свойства -->
-                <div class="w-full md:w-2/3 space-y-3 text-gray-700">
-                    <p class="text-lg font-semibold text-indigo-700">Свойства и зависимости:</p>
-                    <ul class="list-disc pl-5 space-y-2 text-sm md:text-base">
-                        <li><strong>Бедра и основа:</strong> Бедрата са равни ($AC = BC = b$), а основата винаги се означава като $AB = c$.</li>
-                        <li><strong>Ъгли:</strong> Ъглите при основата са равни ($\angle A = \angle B$).</li>
-                        <li><strong>Съвпадение на елементи:</strong> Спусканата към основата $c$ височина $h_c$, медиана $m_c$, ъглополовяща $l_c$ и симетрала $s_c$ <strong>съвпадат</strong>.</li>
-                        <li><strong>Забележителни точки:</strong> Центърът на вписаната окръжност ($I$) и центърът на описаната окръжност ($O$) лежат на височината $h_c$ към основата.</li>
+                    <ul class="text-xs space-y-1 text-gray-700">
+                        <li>Бедра $c$, равни диагонали.</li>
+                        <li><strong>Проекции:</strong> $AH_1 = \dfrac{a-b}{2}$.<br>Средна основа $m = AH_2 = \dfrac{a+b}{2}$.</li>
+                        <li><span class="text-blue-600 font-bold">Описана окр.:</span> Винаги може! (Всяка вписана четириъгълна фигура с успоредни страни е равноб. трапец).</li>
+                        <li><span class="text-red-600 font-bold">Вписана окр.:</span> Ако $a+b=2c \Rightarrow c=m$.</li>
                     </ul>
                 </div>
-            </div>
-        </section>
 
-        <!-- GEOMETRY: ISOSCELES TRAPEZOID -->
-        <section class="mb-12 no-break">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">7. Равнобедрен трапец</h2>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8">
-                <!-- SVG Равнобедрен трапец -->
-                <div class="w-full md:w-1/3 flex justify-center">
-                    <svg class="geom-svg max-w-[170px]" viewBox="0 0 100 100">
-                        <!-- Описана окръжност - преминава точно през четирите върха -->
-                        <circle cx="50" cy="63.3" r="41.7" fill="none" stroke="#93c5fd" stroke-width="1.2" stroke-dasharray="2"/>
-                        <!-- Трапец -->
-                        <polygon points="25,30 75,30 90,75 10,75" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
-                        <!-- Височини -->
-                        <line x1="25" y1="30" x2="25" y2="75" stroke="#ef4444" stroke-width="1" stroke-dasharray="3"/>
-                        <line x1="75" y1="30" x2="75" y2="75" stroke="#ef4444" stroke-width="1" stroke-dasharray="3"/>
-                        
-                        <text x="21" y="26" font-size="7" font-family="sans-serif">D</text>
-                        <text x="75" y="26" font-size="7" font-family="sans-serif">C</text>
-                        <text x="5" y="78" font-size="7" font-family="sans-serif">A</text>
-                        <text x="92" y="78" font-size="7" font-family="sans-serif">B</text>
-                        <text x="21" y="85" font-size="6" fill="#ef4444" font-family="sans-serif">H₁</text>
-                        <text x="73" y="85" font-size="6" fill="#ef4444" font-family="sans-serif">H₂</text>
+                <!-- Правоъгълен трапец -->
+                <div class="card bg-white p-3 rounded-lg shadow-sm border border-gray-200">
+                    <h3 class="text-base font-bold text-center text-indigo-700 mb-1">Правоъгълен трапец</h3>
+                    <svg class="geom-svg max-w-[120px] mb-2" viewBox="0 0 100 90">
+                        <polygon points="15,25 65,25 85,80 15,80" fill="#fff1f2" stroke="#e11d48" stroke-width="1.5"/>
+                        <line x1="65" y1="25" x2="65" y2="80" stroke="#4f46e5" stroke-width="1" stroke-dasharray="2"/>
+                        <rect x="15" y="25" width="5" height="5" fill="none" stroke="#e11d48"/>
+                        <rect x="15" y="75" width="5" height="5" fill="none" stroke="#e11d48"/>
+                        <text x="11" y="21" font-size="7">D</text> <text x="65" y="21" font-size="7">C</text>
+                        <text x="11" y="85" font-size="7">A</text> <text x="87" y="85" font-size="7">B</text>
                     </svg>
-                </div>
-
-                <!-- Свойства -->
-                <div class="w-full md:w-2/3 space-y-3 text-gray-700">
-                    <p class="text-lg font-semibold text-indigo-700">Свойства и зависимости:</p>
-                    <ul class="list-disc pl-5 space-y-2 text-sm md:text-base">
-                        <li><strong>Равни елементи:</strong> Бедрата са равни ($AD = BC = c$), а диагоналите също са равни ($AC = BD$). Ъглите при всяка от основите са равни.</li>
-                        <li><strong>Проекции на височините:</strong> Височините $DH_1$ и $CH_2$ разделят голямата основа на отсечки:
-                            <div class="my-1 font-semibold text-indigo-900 overflow-x-auto overflow-y-hidden py-1">
-                                <div class="text-center">$$AH_1 = BH_2 = \dfrac{a - b}{2}$$</div>
-                                <div class="text-center mt-1">$$AH_2 = BH_1 = \dfrac{a + b}{2} = m \text{ (средна основа)}$$</div>
-                            </div>
-                        </li>
-                        <li><strong class="text-blue-600">Описана окръжност:</strong> Около всеки равнобедрен трапец <strong>може</strong> да се опише окръжност (тъй като сумата от срещуположните му ъгли е $180^\circ$). <strong>В сила е и обратното:</strong> ако трапец е вписан в окръжност, то той задължително е равнобедрен.</li>
-                        <li><strong class="text-red-600">Вписана окръжност:</strong> Може да се впише окръжност само ако сумата от основите е равна на сумата от бедрата:
-                            <div class="my-1 font-semibold text-red-900 overflow-x-auto overflow-y-hidden py-1">
-                                $$a + b = 2c \quad \Rightarrow \quad c = \dfrac{a+b}{2} = m$$
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- СТРАНИЦА 6 -->
-        <div class="page-break"></div>
-
-        <!-- GEOMETRY: RIGHT TRAPEZOID -->
-        <section class="mb-12 no-break">
-            <h2 class="text-3xl font-semibold text-gray-800 mb-6 border-b-2 border-indigo-200 pb-2">8. Правоъгълен трапец</h2>
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center gap-8">
-                <!-- SVG Правоъгълен трапец -->
-                <div class="w-full md:w-1/3 flex justify-center">
-                    <svg class="geom-svg mb-4 max-w-[170px]" viewBox="0 0 100 100">
-                        <!-- Трапец -->
-                        <polygon points="15,25 65,25 85,75 15,75" fill="#fff1f2" stroke="#e11d48" stroke-width="1.5"/>
-                        <!-- Височина от C -->
-                        <line x1="65" y1="25" x2="65" y2="75" stroke="#4f46e5" stroke-width="1" stroke-dasharray="3"/>
-                        <!-- Прави ъгли -->
-                        <rect x="15" y="25" width="5" height="5" fill="none" stroke="#e11d48" stroke-width="1"/>
-                        <rect x="15" y="70" width="5" height="5" fill="none" stroke="#e11d48" stroke-width="1"/>
-                        
-                        <text x="11" y="21" font-size="7" font-family="sans-serif">D</text>
-                        <text x="65" y="21" font-size="7" font-family="sans-serif">C</text>
-                        <text x="11" y="82" font-size="7" font-family="sans-serif">A</text>
-                        <text x="87" y="78" font-size="7" font-family="sans-serif">B</text>
-                        <text x="63" y="82" font-size="6" fill="#4f46e5" font-family="sans-serif">H</text>
-                    </svg>
-                </div>
-
-                <!-- Свойства -->
-                <div class="w-full md:w-2/3 space-y-3 text-gray-700">
-                    <p class="text-lg font-semibold text-indigo-700">Свойства и зависимости:</p>
-                    <ul class="list-disc pl-5 space-y-2 text-sm md:text-base">
-                        <li><strong>Особеност:</strong> Едното бедро е перпендикулярно на основите и съвпада с височината на трапеца: $AD = h$.</li>
-                        <li><strong>Питагорова зависимост:</strong> Височината от $C$ ($CH$) разделя основата $a$ на отсечка $AH = b$ и $HB = a - b$. В правоъгълния $\triangle CHB$ по Питагорова теорема намираме наклоненото бедро $BC = c$:
-                            <div class="my-1 font-semibold text-indigo-900 overflow-x-auto overflow-y-hidden py-1">
-                                $$BC^2 = CH^2 + HB^2 \quad \Rightarrow \quad c^2 = h^2 + (a-b)^2$$
-                            </div>
-                        </li>
-                        <li><strong class="text-red-600">Вписана окръжност:</strong> Може да се впише окръжност с радиус $r = \dfrac{h}{2}$ само при условие че:
-                            <div class="my-1 font-semibold text-red-900 overflow-x-auto overflow-y-hidden py-1">
-                                $$a + b = h + c$$
-                            </div>
-                        </li>
-                        <li><strong class="text-blue-600">Описана окръжност:</strong> Около правоъгълен трапец <strong>не може</strong> да се опише окръжност (тъй като сумата от срещуположните му ъгли не е $180^\circ$).</li>
+                    <ul class="text-xs space-y-1 text-gray-700">
+                        <li>Перпендикулярно бедро $AD = h$.</li>
+                        <li><strong>Питагор:</strong> В $\triangle CHB$, наклоненото бедро $c^2 = h^2 + (a-b)^2$.</li>
+                        <li><span class="text-red-600 font-bold">Вписана окр.:</span> Диаметър $2r = h$. Може само ако $a+b = h+c$.</li>
+                        <li><span class="text-blue-600 font-bold">Описана окр.:</span> <strong>Не може!</strong></li>
                     </ul>
                 </div>
             </div>
             
-            <!-- Общи формули за трапец -->
-            <div class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-xl flex flex-wrap justify-around items-center text-center gap-4">
-                <div class="text-sm"><strong>Средна отсечка (основа):</strong> $m = \dfrac{a + b}{2}$</div>
-                <div class="text-sm"><strong>Лице на трапец:</strong> $S = \dfrac{a + b}{2} \cdot h = m \cdot h$</div>
-                <div class="text-sm"><strong>Вписана окръжност:</strong> Диаметърът е равен на височината на трапеца: $2r = h$</div>
+            <div class="mt-2 p-2 bg-gray-50 border border-gray-200 rounded text-center text-xs font-semibold text-gray-800 card">
+                Общо за трапец: Средна отсечка $m = \dfrac{a + b}{2}$, Лице $S = \dfrac{a + b}{2} \cdot h = m \cdot h$
             </div>
         </section>
 
         <!-- SQUARES TABLE 1 TO 30 -->
-        <section class="mt-12 no-break">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-                <h3 class="text-xl font-bold text-indigo-700 mb-4 text-center">
-                    <i class="fa-solid fa-table text-indigo-500 mr-2 print-hide"></i>Таблица с квадратите на числата от 1 до 30
-                </h3>
-                
-                <div class="grid grid-cols-3 gap-4 md:gap-8">
+        <section class="mt-6 card">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
+                <h3 class="text-lg font-bold text-indigo-700 mb-3 text-center">Таблица с квадратите (1 до 30)</h3>
+                <div class="grid grid-cols-3 print-grid-3 gap-2 text-xs">
                     <!-- Колона 1: 1 - 10 -->
-                    <div>
-                        <table class="w-full text-center border-collapse border border-gray-200 text-sm">
-                            <thead>
-                                <tr class="bg-indigo-50">
-                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n$</th>
-                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n^2$</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">1</td><td class="p-1 border border-gray-200 font-bold">1</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">2</td><td class="p-1 border border-gray-200 font-bold">4</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">3</td><td class="p-1 border border-gray-200 font-bold">9</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">4</td><td class="p-1 border border-gray-200 font-bold">16</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">5</td><td class="p-1 border border-gray-200 font-bold">25</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">6</td><td class="p-1 border border-gray-200 font-bold">36</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">7</td><td class="p-1 border border-gray-200 font-bold">49</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">8</td><td class="p-1 border border-gray-200 font-bold">64</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">9</td><td class="p-1 border border-gray-200 font-bold">81</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">10</td><td class="p-1 border border-gray-200 font-bold">100</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
+                    <table class="w-full text-center border-collapse border border-gray-200">
+                        <tr class="bg-indigo-50"><th class="border border-gray-300">$n$</th><th class="border border-gray-300">$n^2$</th></tr>
+                        <tr><td class="border">1</td><td class="border font-bold">1</td></tr><tr><td class="border">2</td><td class="border font-bold">4</td></tr><tr><td class="border">3</td><td class="border font-bold">9</td></tr><tr><td class="border">4</td><td class="border font-bold">16</td></tr><tr><td class="border">5</td><td class="border font-bold">25</td></tr><tr><td class="border">6</td><td class="border font-bold">36</td></tr><tr><td class="border">7</td><td class="border font-bold">49</td></tr><tr><td class="border">8</td><td class="border font-bold">64</td></tr><tr><td class="border">9</td><td class="border font-bold">81</td></tr><tr><td class="border">10</td><td class="border font-bold">100</td></tr>
+                    </table>
                     <!-- Колона 2: 11 - 20 -->
-                    <div>
-                        <table class="w-full text-center border-collapse border border-gray-200 text-sm">
-                            <thead>
-                                <tr class="bg-indigo-50">
-                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n$</th>
-                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n^2$</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">11</td><td class="p-1 border border-gray-200 font-bold">121</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">12</td><td class="p-1 border border-gray-200 font-bold">144</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">13</td><td class="p-1 border border-gray-200 font-bold">169</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">14</td><td class="p-1 border border-gray-200 font-bold">196</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">15</td><td class="p-1 border border-gray-200 font-bold">225</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">16</td><td class="p-1 border border-gray-200 font-bold">256</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">17</td><td class="p-1 border border-gray-200 font-bold">289</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">18</td><td class="p-1 border border-gray-200 font-bold">324</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">19</td><td class="p-1 border border-gray-200 font-bold">361</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">20</td><td class="p-1 border border-gray-200 font-bold">400</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
+                    <table class="w-full text-center border-collapse border border-gray-200">
+                        <tr class="bg-indigo-50"><th class="border border-gray-300">$n$</th><th class="border border-gray-300">$n^2$</th></tr>
+                        <tr><td class="border">11</td><td class="border font-bold">121</td></tr><tr><td class="border">12</td><td class="border font-bold">144</td></tr><tr><td class="border">13</td><td class="border font-bold">169</td></tr><tr><td class="border">14</td><td class="border font-bold">196</td></tr><tr><td class="border">15</td><td class="border font-bold">225</td></tr><tr><td class="border">16</td><td class="border font-bold">256</td></tr><tr><td class="border">17</td><td class="border font-bold">289</td></tr><tr><td class="border">18</td><td class="border font-bold">324</td></tr><tr><td class="border">19</td><td class="border font-bold">361</td></tr><tr><td class="border">20</td><td class="border font-bold">400</td></tr>
+                    </table>
                     <!-- Колона 3: 21 - 30 -->
-                    <div>
-                        <table class="w-full text-center border-collapse border border-gray-200 text-sm">
-                            <thead>
-                                <tr class="bg-indigo-50">
-                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n$</th>
-                                    <th class="p-1 border border-gray-300 font-bold text-indigo-900">$n^2$</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">21</td><td class="p-1 border border-gray-200 font-bold">441</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">22</td><td class="p-1 border border-gray-200 font-bold">484</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">23</td><td class="p-1 border border-gray-200 font-bold">529</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">24</td><td class="p-1 border border-gray-200 font-bold">576</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">25</td><td class="p-1 border border-gray-200 font-bold">625</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">26</td><td class="p-1 border border-gray-200 font-bold">676</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">27</td><td class="p-1 border border-gray-200 font-bold">729</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">28</td><td class="p-1 border border-gray-200 font-bold">784</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">29</td><td class="p-1 border border-gray-200 font-bold">841</td></tr>
-                                <tr><td class="p-1 border border-gray-200 font-semibold text-gray-600">30</td><td class="p-1 border border-gray-200 font-bold">900</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <table class="w-full text-center border-collapse border border-gray-200">
+                        <tr class="bg-indigo-50"><th class="border border-gray-300">$n$</th><th class="border border-gray-300">$n^2$</th></tr>
+                        <tr><td class="border">21</td><td class="border font-bold">441</td></tr><tr><td class="border">22</td><td class="border font-bold">484</td></tr><tr><td class="border">23</td><td class="border font-bold">529</td></tr><tr><td class="border">24</td><td class="border font-bold">576</td></tr><tr><td class="border">25</td><td class="border font-bold">625</td></tr><tr><td class="border">26</td><td class="border font-bold">676</td></tr><tr><td class="border">27</td><td class="border font-bold">729</td></tr><tr><td class="border">28</td><td class="border font-bold">784</td></tr><tr><td class="border">29</td><td class="border font-bold">841</td></tr><tr><td class="border">30</td><td class="border font-bold">900</td></tr>
+                    </table>
                 </div>
             </div>
         </section>
 
     </div>
 
-    <!-- Scripts за визуализация -->
     <script>
-        function toggleSolution(id) {
-            const el = document.getElementById(id);
-            if (el.classList.contains('open')) {
-                el.classList.remove('open');
-            } else {
-                el.classList.add('open');
-            }
-        }
-
         document.addEventListener("DOMContentLoaded", function() {
             renderMathInElement(document.body, {
                 delimiters: [
