@@ -57,7 +57,7 @@
             svg polygon, svg circle, svg line, svg rect, svg path { stroke: black !important; fill: none !important; }
             .geom-svg { max-height: 100px !important; margin-bottom: 0.2rem !important; }
             
-            /* Изключения за числовите оси при печат */
+            /* Изключения за числовите оси и точките при печат */
             svg circle.solid-point { fill: black !important; }
             svg circle.hollow-point { fill: white !important; }
             svg polygon.arrow-head { fill: black !important; stroke: none !important; }
@@ -142,26 +142,27 @@
                     <div class="mb-3">
                         <strong class="text-sm">Пример 1 (Класически):</strong> $(x+3)(x-1)(x-5) \le 0$<br>
                         <div class="my-1 flex justify-center print:my-0">
-                            <svg viewBox="0 0 200 45" class="w-full max-w-[180px]">
-                                <line x1="5" y1="25" x2="195" y2="25" stroke="currentColor" stroke-width="1" />
-                                <polygon points="195,25 190,22 190,28" fill="currentColor" class="arrow-head" />
+                            <!-- SVG ОСТ ЗА ПРИМЕР 1 -->
+                            <svg viewBox="0 0 200 50" class="w-full max-w-[180px]">
+                                <line x1="5" y1="30" x2="195" y2="30" stroke="currentColor" stroke-width="1" />
+                                <polygon points="195,30 190,27 190,33" fill="currentColor" class="arrow-head" />
                                 
-                                <path d="M 5 25 Q 22 5 40 25" fill="none" stroke="#2563eb" stroke-width="1"/>
-                                <path d="M 40 25 Q 70 5 100 25" fill="none" stroke="#dc2626" stroke-width="1"/>
-                                <path d="M 100 25 Q 130 5 160 25" fill="none" stroke="#2563eb" stroke-width="1"/>
-                                <path d="M 160 25 Q 177 5 190 25" fill="none" stroke="#dc2626" stroke-width="1"/>
+                                <path d="M 5 30 Q 22 5 40 30" fill="none" stroke="#2563eb" stroke-width="1.2"/>
+                                <path d="M 40 30 Q 70 5 100 30" fill="none" stroke="#dc2626" stroke-width="1.2"/>
+                                <path d="M 100 30 Q 130 5 160 30" fill="none" stroke="#2563eb" stroke-width="1.2"/>
+                                <path d="M 160 30 Q 177 5 190 30" fill="none" stroke="#dc2626" stroke-width="1.2"/>
                                 
-                                <text x="22" y="18" font-size="12" font-weight="bold" fill="#2563eb" text-anchor="middle">-</text>
-                                <text x="70" y="18" font-size="12" font-weight="bold" fill="#dc2626" text-anchor="middle">+</text>
-                                <text x="130" y="18" font-size="12" font-weight="bold" fill="#2563eb" text-anchor="middle">-</text>
-                                <text x="177" y="18" font-size="12" font-weight="bold" fill="#dc2626" text-anchor="middle">+</text>
+                                <text x="22.5" y="22" font-size="18" font-weight="bold" fill="#2563eb" text-anchor="middle" class="print:fill-black">-</text>
+                                <text x="70" y="22" font-size="18" font-weight="bold" fill="#dc2626" text-anchor="middle" class="print:fill-black">+</text>
+                                <text x="130" y="22" font-size="18" font-weight="bold" fill="#2563eb" text-anchor="middle" class="print:fill-black">-</text>
+                                <text x="177.5" y="22" font-size="18" font-weight="bold" fill="#dc2626" text-anchor="middle" class="print:fill-black">+</text>
 
-                                <circle cx="40" cy="25" r="3" class="solid-point" fill="currentColor" />
-                                <text x="40" y="38" font-size="10" text-anchor="middle" class="print:fill-black">-3</text>
-                                <circle cx="100" cy="25" r="3" class="solid-point" fill="currentColor" />
-                                <text x="100" y="38" font-size="10" text-anchor="middle" class="print:fill-black">1</text>
-                                <circle cx="160" cy="25" r="3" class="solid-point" fill="currentColor" />
-                                <text x="160" y="38" font-size="10" text-anchor="middle" class="print:fill-black">5</text>
+                                <circle cx="40" cy="30" r="3" class="solid-point" fill="currentColor" />
+                                <text x="40" y="44" font-size="10" text-anchor="middle" class="print:fill-black">-3</text>
+                                <circle cx="100" cy="30" r="3" class="solid-point" fill="currentColor" />
+                                <text x="100" y="44" font-size="10" text-anchor="middle" class="print:fill-black">1</text>
+                                <circle cx="160" cy="30" r="3" class="solid-point" fill="currentColor" />
+                                <text x="160" y="44" font-size="10" text-anchor="middle" class="print:fill-black">5</text>
                             </svg>
                         </div>
                         <div class="text-center"><span class="font-bold text-xs bg-gray-100 px-2 py-1 rounded">Отг: $x \in (-\infty; -3] \cup [1; 5]$</span></div>
@@ -169,23 +170,24 @@
                     <div>
                         <strong class="text-sm">Пример 2 (Четна кратност):</strong> $(x-2)^2(x+2) > 0$<br>
                         <div class="my-1 flex justify-center print:my-0">
-                            <svg viewBox="0 0 200 45" class="w-full max-w-[180px]">
-                                <line x1="5" y1="25" x2="195" y2="25" stroke="currentColor" stroke-width="1" />
-                                <polygon points="195,25 190,22 190,28" fill="currentColor" class="arrow-head" />
+                            <!-- SVG ОСТ ЗА ПРИМЕР 2 -->
+                            <svg viewBox="0 0 200 55" class="w-full max-w-[180px]">
+                                <line x1="5" y1="30" x2="195" y2="30" stroke="currentColor" stroke-width="1" />
+                                <polygon points="195,30 190,27 190,33" fill="currentColor" class="arrow-head" />
                                 
-                                <path d="M 5 25 Q 32 5 60 25" fill="none" stroke="#2563eb" stroke-width="1"/>
-                                <path d="M 60 25 Q 100 5 140 25" fill="none" stroke="#dc2626" stroke-width="1"/>
-                                <path d="M 140 25 Q 167 5 190 25" fill="none" stroke="#dc2626" stroke-width="1"/>
+                                <path d="M 5 30 Q 32 5 60 30" fill="none" stroke="#2563eb" stroke-width="1.2"/>
+                                <path d="M 60 30 Q 100 5 140 30" fill="none" stroke="#dc2626" stroke-width="1.2"/>
+                                <path d="M 140 30 Q 167 5 190 30" fill="none" stroke="#dc2626" stroke-width="1.2"/>
                                 
-                                <text x="32" y="18" font-size="12" font-weight="bold" fill="#2563eb" text-anchor="middle">-</text>
-                                <text x="100" y="18" font-size="12" font-weight="bold" fill="#dc2626" text-anchor="middle">+</text>
-                                <text x="167" y="18" font-size="12" font-weight="bold" fill="#dc2626" text-anchor="middle">+</text>
+                                <text x="32.5" y="22" font-size="18" font-weight="bold" fill="#2563eb" text-anchor="middle" class="print:fill-black">-</text>
+                                <text x="100" y="22" font-size="18" font-weight="bold" fill="#dc2626" text-anchor="middle" class="print:fill-black">+</text>
+                                <text x="167.5" y="22" font-size="18" font-weight="bold" fill="#dc2626" text-anchor="middle" class="print:fill-black">+</text>
 
-                                <circle cx="60" cy="25" r="2.5" class="hollow-point" fill="white" stroke="currentColor" stroke-width="1.5" />
-                                <text x="60" y="38" font-size="10" text-anchor="middle" class="print:fill-black">-2</text>
-                                <circle cx="140" cy="25" r="2.5" class="hollow-point" fill="white" stroke="currentColor" stroke-width="1.5" />
-                                <text x="140" y="38" font-size="10" text-anchor="middle" class="print:fill-black">2</text>
-                                <text x="140" y="45" font-size="5.5" fill="#dc2626" text-anchor="middle" class="print:fill-black">четна кр.</text>
+                                <circle cx="60" cy="30" r="2.5" class="hollow-point" fill="white" stroke="currentColor" stroke-width="1.5" />
+                                <text x="60" y="44" font-size="10" text-anchor="middle" class="print:fill-black">-2</text>
+                                <circle cx="140" cy="30" r="2.5" class="hollow-point" fill="white" stroke="currentColor" stroke-width="1.5" />
+                                <text x="140" y="44" font-size="10" text-anchor="middle" class="print:fill-black">2</text>
+                                <text x="140" y="52" font-size="6" fill="#dc2626" text-anchor="middle" class="print:fill-black">четна кр.</text>
                             </svg>
                         </div>
                         <div class="text-center"><span class="font-bold text-xs bg-gray-100 px-2 py-1 rounded">Отг: $x \in (-2; 2) \cup (2; +\infty)$</span></div>
@@ -198,47 +200,107 @@
         <section class="mb-6">
             <h2 class="text-3xl font-semibold text-gray-800 mb-3 border-b-2 border-indigo-200 pb-1">3. Пропорции и подобни триъгълници</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 print-grid-3 gap-4">
-                <!-- Признаци -->
-                <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                    <h3 class="text-lg font-bold text-indigo-700 mb-1">Признаци за подобност</h3>
-                    <ul class="list-disc pl-4 text-xs space-y-1 mb-2">
-                        <li><strong>I:</strong> Два ъгъла са съответно равни.</li>
-                        <li><strong>II:</strong> Две страни са пропорционални и ъгълът между тях е равен.</li>
-                        <li><strong>III:</strong> Трите страни са пропорционални.</li>
+            <div class="grid grid-cols-1 md:grid-cols-2 print-grid-2 gap-4">
+                
+                <!-- Лява колона: Признаци (поема повече място) -->
+                <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col justify-between">
+                    <h3 class="text-lg font-bold text-indigo-700 mb-2">Признаци за подобност на триъгълници</h3>
+                    
+                    <!-- Чертеж на 2 подобни триъгълника (без дъгички) -->
+                    <div class="flex justify-center mb-3">
+                        <svg class="geom-svg w-full max-w-[220px]" viewBox="0 0 100 50">
+                            <!-- Large Triangle ABC -->
+                            <polygon points="15,40 45,40 30,10" fill="#e0e7ff" stroke="#3b82f6" stroke-width="1.5"/>
+                            <text x="12" y="48" font-size="8" text-anchor="middle">A</text>
+                            <text x="48" y="48" font-size="8" text-anchor="middle">B</text>
+                            <text x="30" y="7" font-size="8" text-anchor="middle">C</text>
+                            
+                            <!-- Small Triangle A1B1C1 -->
+                            <polygon points="65,40 80,40 72.5,25" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+                            <text x="62" y="48" font-size="8" text-anchor="middle">A₁</text>
+                            <text x="83" y="48" font-size="8" text-anchor="middle">B₁</text>
+                            <text x="72.5" y="22" font-size="8" text-anchor="middle">C₁</text>
+                        </svg>
+                    </div>
+
+                    <!-- Формални признаци (Учебникарски стил) -->
+                    <ul class="text-[11px] md:text-xs leading-tight space-y-2 mb-3 text-gray-800">
+                        <li>
+                            <strong class="text-indigo-800">Първи признак:</strong> Ако два ъгъла на един триъгълник са съответно равни на два ъгъла от друг, то двата триъгълника са подобни.<br> 
+                            <span class="text-gray-600 block mt-0.5">$\angle A = \angle A_1, \angle B = \angle B_1 \Rightarrow \triangle ABC \sim \triangle A_1B_1C_1$</span>
+                        </li>
+                        <li>
+                            <strong class="text-indigo-800">Втори признак:</strong> Ако две страни на един триъгълник са пропорционални на две страни от друг и ъглите, заключени между тях, са равни, то триъгълниците са подобни.<br> 
+                            <span class="text-gray-600 block mt-0.5">$\dfrac{AB}{A_1B_1} = \dfrac{AC}{A_1C_1}, \angle A = \angle A_1 \Rightarrow \triangle ABC \sim \triangle A_1B_1C_1$</span>
+                        </li>
+                        <li>
+                            <strong class="text-indigo-800">Трети признак:</strong> Ако трите страни на един триъгълник са съответно пропорционални на трите страни на друг, то триъгълниците са подобни.<br> 
+                            <span class="text-gray-600 block mt-0.5">$\dfrac{AB}{A_1B_1} = \dfrac{BC}{B_1C_1} = \dfrac{CA}{C_1A_1} \Rightarrow \triangle ABC \sim \triangle A_1B_1C_1$</span>
+                        </li>
                     </ul>
-                    <div class="bg-gray-50 p-2 rounded text-xs text-center border border-gray-200">
-                        <strong>Коефициент ($k$):</strong>
-                        $$\dfrac{a}{a_1} = \dfrac{h}{h_1} = \dfrac{P}{P_1} = \dfrac{R}{R_1} = \mathbf{k}$$
-                        Лица: $\dfrac{S}{S_1} = \mathbf{k^2}$
+
+                    <div class="bg-gray-50 p-2 rounded text-[10px] md:text-xs text-center border border-gray-200 mt-auto">
+                        <strong class="block mb-1">Коефициент на подобност ($k$):</strong>
+                        $$\dfrac{a}{a_1} = \dfrac{h}{h_1} = \dfrac{m}{m_1} = \dfrac{l}{l_1} = \dfrac{R}{R_1} = \dfrac{r}{r_1} = \dfrac{P}{P_1} = \mathbf{k}$$
+                        <span class="block mt-1 text-indigo-700">Отношение на лицата: $\dfrac{S}{S_1} = \mathbf{k^2}$</span>
                     </div>
                 </div>
 
-                <!-- Ъглополовяща -->
-                <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-center">
-                    <h3 class="text-lg font-bold text-indigo-700 mb-1">Ъглополовяща</h3>
-                    <svg class="geom-svg mb-1" viewBox="0 0 100 65">
-                        <polygon points="10,60 90,60 40,10" fill="#e0e7ff" stroke="#3b82f6" stroke-width="1.5"/>
-                        <line x1="40" y1="10" x2="52" y2="60" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3"/>
-                        <text x="5" y="65" font-size="7">A</text> <text x="92" y="65" font-size="7">B</text>
-                        <text x="38" y="7" font-size="7">C</text> <text x="48" y="66" font-size="7" fill="#ef4444">L</text>
-                    </svg>
-                    <p class="text-xs mb-1">Дели страната на части, пропорционални на бедрата:</p>
-                    <div class="math-box p-1 rounded font-bold text-sm">$$\dfrac{AL}{LB} = \dfrac{AC}{BC}$$</div>
-                </div>
+                <!-- Дясна колона: Ъглополовяща и Талес -->
+                <div class="flex flex-col gap-4">
+                    <!-- Ъглополовяща -->
+                    <div class="card bg-white p-3 rounded-lg shadow-sm border border-gray-200 text-center flex-1 flex flex-col justify-center">
+                        <h3 class="text-lg font-bold text-indigo-700 mb-1">Свойство на ъглополовящата</h3>
+                        <div class="flex justify-center my-1">
+                            <svg class="geom-svg max-w-[140px]" viewBox="0 0 100 75">
+                                <polygon points="10,60 90,60 40,10" fill="#e0e7ff" stroke="#3b82f6" stroke-width="1.5"/>
+                                <line x1="40" y1="10" x2="55" y2="60" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3"/>
+                                <text x="7" y="68" font-size="8" text-anchor="middle">A</text>
+                                <text x="93" y="68" font-size="8" text-anchor="middle">B</text>
+                                <text x="39" y="7" font-size="8" text-anchor="middle">C</text>
+                                
+                                <!-- Пресечна точка L -->
+                                <circle cx="55" cy="60" r="1.5" class="solid-point" fill="#ef4444" />
+                                <text x="55" y="68" font-size="8" text-anchor="middle" font-weight="bold" fill="#ef4444">L</text>
+                            </svg>
+                        </div>
+                        <p class="text-xs mb-1">Дели страната на части, пропорционални на бедрата:</p>
+                        <div class="math-box p-1 rounded font-bold text-sm">$$\dfrac{AL}{LB} = \dfrac{AC}{BC}$$</div>
+                    </div>
 
-                <!-- Талес -->
-                <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200 text-center">
-                    <h3 class="text-lg font-bold text-indigo-700 mb-1">Теорема на Талес</h3>
-                    <svg class="geom-svg mb-1" viewBox="0 0 100 65">
-                        <line x1="10" y1="32" x2="90" y2="10" stroke="#3b82f6" stroke-width="1.5"/>
-                        <line x1="10" y1="32" x2="90" y2="60" stroke="#3b82f6" stroke-width="1.5"/>
-                        <line x1="45" y1="15" x2="35" y2="50" stroke="#ef4444" stroke-width="1.5"/>
-                        <line x1="80" y1="5" x2="70" y2="65" stroke="#ef4444" stroke-width="1.5"/>
-                        <text x="5" y="34" font-size="7">O</text>
-                    </svg>
-                    <p class="text-xs mb-1">Успоредни прави отсичат пропорционални отсечки:</p>
-                    <div class="math-box p-1 rounded font-bold text-sm">$$\dfrac{OA}{AC} = \dfrac{OB}{BD}$$</div>
+                    <!-- Талес -->
+                    <div class="card bg-white p-3 rounded-lg shadow-sm border border-gray-200 text-center flex-1 flex flex-col justify-center">
+                        <h3 class="text-lg font-bold text-indigo-700 mb-1">Теорема на Талес</h3>
+                        <div class="flex justify-center my-1">
+                            <!-- SVG Талес с пресечни точки -->
+                            <svg class="geom-svg max-w-[150px]" viewBox="0 0 100 75">
+                                <!-- Рамене -->
+                                <line x1="10" y1="35" x2="80" y2="5" stroke="#3b82f6" stroke-width="1.5"/>
+                                <line x1="10" y1="35" x2="70" y2="70" stroke="#3b82f6" stroke-width="1.5"/>
+                                <!-- Успоредни прави -->
+                                <line x1="42" y1="5" x2="25" y2="60" stroke="#ef4444" stroke-width="1.5"/>
+                                <line x1="72" y1="-5" x2="45" y2="75" stroke="#ef4444" stroke-width="1.5"/>
+                                
+                                <!-- Точки и етикети -->
+                                <circle cx="10" cy="35" r="1.5" class="solid-point" fill="#3b82f6" />
+                                <text x="6" y="37" font-size="8" text-anchor="end">O</text>
+                                
+                                <circle cx="38" cy="23" r="1.5" class="solid-point" fill="#ef4444" />
+                                <text x="34" y="21" font-size="8" text-anchor="end">A</text>
+                                
+                                <circle cx="28" cy="46" r="1.5" class="solid-point" fill="#ef4444" />
+                                <text x="24" y="50" font-size="8" text-anchor="end">B</text>
+                                
+                                <circle cx="68.5" cy="10" r="1.5" class="solid-point" fill="#ef4444" />
+                                <text x="68.5" y="6" font-size="8" text-anchor="middle">C</text>
+                                
+                                <circle cx="50" cy="58" r="1.5" class="solid-point" fill="#ef4444" />
+                                <text x="46" y="64" font-size="8" text-anchor="end">D</text>
+                            </svg>
+                        </div>
+                        <p class="text-[11px] mb-1">Успоредни прави отсичат пропорционални отсечки от раменете на ъгъла:</p>
+                        <div class="math-box p-1 rounded font-bold text-sm">$$\dfrac{OA}{AC} = \dfrac{OB}{BD}$$</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -251,13 +313,22 @@
                 <!-- Правоъгълен триъгълник -->
                 <div class="card bg-white p-4 rounded-lg shadow-sm border border-gray-200 border-t-4 border-teal-500 flex flex-col md:flex-row items-center gap-3">
                     <div class="w-full md:w-1/2">
-                        <svg class="geom-svg w-full" viewBox="0 0 100 65">
+                        <svg class="geom-svg w-full" viewBox="0 0 100 70">
                             <polygon points="10,60 90,60 30,20" fill="#ccfbf1" stroke="#0f766e" stroke-width="1.5"/>
                             <line x1="30" y1="20" x2="30" y2="60" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="2"/>
                             <rect x="30" y="56" width="4" height="4" fill="none" stroke="#ef4444" stroke-width="1"/>
-                            <text x="5" y="65" font-size="6">A</text> <text x="92" y="65" font-size="6">B</text> <text x="28" y="15" font-size="6">C</text>
-                            <text x="18" y="38" font-size="6">b</text> <text x="65" y="38" font-size="6">a</text> <text x="48" y="70" font-size="6">c</text>
-                            <text x="20" y="58" font-size="5">b₁</text> <text x="60" y="58" font-size="5">a₁</text> <text x="25" y="45" font-size="5" fill="#ef4444">h_c</text>
+                            
+                            <text x="7" y="67" font-size="7" text-anchor="middle">A</text>
+                            <text x="93" y="67" font-size="7" text-anchor="middle">B</text>
+                            <text x="29" y="16" font-size="7" text-anchor="middle">C</text>
+                            <text x="18" y="38" font-size="6">b</text>
+                            <text x="65" y="38" font-size="6">a</text>
+                            <text x="48" y="70" font-size="6">c</text>
+                            
+                            <text x="20" y="58" font-size="5">b₁</text>
+                            <text x="60" y="58" font-size="5">a₁</text>
+                            <text x="25" y="45" font-size="5" fill="#ef4444">h_c</text>
+                            <text x="30" y="67" font-size="7" fill="#ef4444" text-anchor="middle">H</text>
                         </svg>
                     </div>
                     <div class="w-full md:w-1/2 text-xs space-y-1">
@@ -293,8 +364,11 @@
                     <svg class="geom-svg max-w-[120px] mb-2" viewBox="0 0 100 90">
                         <polygon points="50,10 15,80 85,80" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
                         <line x1="50" y1="10" x2="50" y2="80" stroke="#ea580c" stroke-width="1.2" stroke-dasharray="2"/>
-                        <text x="47" y="7" font-size="7">C</text> <text x="8" y="85" font-size="7">A</text> <text x="88" y="85" font-size="7">B</text>
-                        <text x="25" y="45" font-size="7">b</text> <text x="70" y="45" font-size="7">b</text> <text x="48" y="88" font-size="7">c</text>
+                        <text x="50" y="8" font-size="8" text-anchor="middle">C</text>
+                        <text x="12" y="86" font-size="8" text-anchor="middle">A</text>
+                        <text x="88" y="86" font-size="8" text-anchor="middle">B</text>
+                        <text x="50" y="87" font-size="7" fill="#ea580c" text-anchor="middle">H</text>
+                        <text x="25" y="45" font-size="7">b</text> <text x="70" y="45" font-size="7">b</text> <text x="48" y="90" font-size="7" class="print:hidden">c</text>
                     </svg>
                     <ul class="text-[11px] leading-tight space-y-1 text-gray-700">
                         <li><strong>Бедра:</strong> $AC=BC=b$. Основа: $c$.</li>
@@ -311,14 +385,18 @@
                         <polygon points="25,25 75,25 90,80 10,80" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
                         <line x1="25" y1="25" x2="25" y2="80" stroke="#ef4444" stroke-width="1" stroke-dasharray="2"/>
                         <line x1="75" y1="25" x2="75" y2="80" stroke="#ef4444" stroke-width="1" stroke-dasharray="2"/>
-                        <text x="21" y="21" font-size="7">D</text> <text x="75" y="21" font-size="7">C</text>
-                        <text x="5" y="85" font-size="7">A</text> <text x="92" y="85" font-size="7">B</text>
+                        <text x="21" y="22" font-size="8" text-anchor="end">D</text>
+                        <text x="79" y="22" font-size="8" text-anchor="start">C</text>
+                        <text x="8" y="82" font-size="8" text-anchor="end">A</text>
+                        <text x="92" y="82" font-size="8" text-anchor="start">B</text>
+                        <text x="25" y="86" font-size="7" fill="#ef4444" text-anchor="middle">H₁</text>
+                        <text x="75" y="86" font-size="7" fill="#ef4444" text-anchor="middle">H₂</text>
                     </svg>
-                    <ul class="text-[11px] leading-tight space-y-[0.35rem] text-gray-700">
+                    <ul class="text-[10px] md:text-[11px] leading-tight space-y-[0.35rem] text-gray-700">
                         <li>Бедра $c$, равни диагонали.</li>
                         <li><strong>Проекции:</strong> $AH_1 = \dfrac{a-b}{2}$.<br>Средна основа $m = AH_2 = \dfrac{a+b}{2}$.</li>
-                        <li><span class="text-blue-600 font-bold">Описана окр.:</span> Един трапец е вписан в окръжност, тогава и само тогава, когато е равнобедрен.<br><strong>Извод:</strong> Ако трапец е вписан в окръжност, той е равнобедрен.</li>
-                        <li><span class="text-red-600 font-bold">Вписана окр.:</span> Един трапец е описан около окръжност, тогава и само тогава, когато сборът от основите му е равен на сбора от бедрата му.<br><strong>Извод:</strong> $a+b=2c \Rightarrow c=m$ и височина $h=2r$.</li>
+                        <li><span class="text-blue-600 font-bold">Описана окр.:</span> Един трапец е вписан в окръжност, тогава и само тогава, когато е равнобедрен.<br><strong class="text-gray-900">Извод:</strong> Ако трапец е вписан в окръжност, той е равнобедрен.</li>
+                        <li><span class="text-red-600 font-bold">Вписана окр.:</span> Един трапец е описан около окръжност, тогава и само тогава, когато сборът от основите му е равен на сбора от бедрата му.<br><strong class="text-gray-900">Извод:</strong> $a+b=2c \Rightarrow c=m$<br>и височина $h=2r$.</li>
                     </ul>
                 </div>
 
@@ -330,13 +408,16 @@
                         <line x1="65" y1="25" x2="65" y2="80" stroke="#4f46e5" stroke-width="1" stroke-dasharray="2"/>
                         <rect x="15" y="25" width="5" height="5" fill="none" stroke="#e11d48"/>
                         <rect x="15" y="75" width="5" height="5" fill="none" stroke="#e11d48"/>
-                        <text x="11" y="21" font-size="7">D</text> <text x="65" y="21" font-size="7">C</text>
-                        <text x="11" y="85" font-size="7">A</text> <text x="87" y="85" font-size="7">B</text>
+                        <text x="12" y="22" font-size="8" text-anchor="end">D</text>
+                        <text x="68" y="22" font-size="8" text-anchor="start">C</text>
+                        <text x="12" y="82" font-size="8" text-anchor="end">A</text>
+                        <text x="88" y="82" font-size="8" text-anchor="start">B</text>
+                        <text x="65" y="87" font-size="7" fill="#4f46e5" text-anchor="middle">H</text>
                     </svg>
-                    <ul class="text-[11px] leading-tight space-y-[0.35rem] text-gray-700">
+                    <ul class="text-[10px] md:text-[11px] leading-tight space-y-[0.35rem] text-gray-700">
                         <li>Перп. бедро $AD = h$. В $\triangle CHB$, наклоненото бедро е $c^2 = h^2 + (a-b)^2$.</li>
                         <li><span class="text-blue-600 font-bold">Описана окр.:</span> <strong>Не може!</strong> (Един трапец се вписва в окръжност само ако е равнобедрен).</li>
-                        <li><span class="text-red-600 font-bold">Вписана окр.:</span> Един трапец е описан около окръжност, тогава и само тогава, когато сборът от основите му е равен на сбора от бедрата му.<br><strong>Извод:</strong> Ако правоъгълен трапец е описан около окр., то $a+b = h+c$ и височина $h=2r$.</li>
+                        <li><span class="text-red-600 font-bold">Вписана окр.:</span> Един трапец е описан около окръжност, тогава и само тогава, когато сборът от основите му е равен на сбора от бедрата му.<br><strong class="text-gray-900">Извод:</strong> Ако правоъгълен трапец е описан около окр., то $a+b = h+c$<br>и височина $h=2r$.</li>
                     </ul>
                 </div>
             </div>
